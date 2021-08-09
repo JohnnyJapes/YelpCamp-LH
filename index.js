@@ -57,7 +57,7 @@ app.get('/campgrounds', async (req, res) => {
 //Show/Details route
 app.get('/campgrounds/:id', async (req, res) => {
     const {id} = req.params;
-    const campgrounds = await Campground.findById(id).exec()
+    const campground = await Campground.findById(id).exec()
     .catch(err =>{
         console.log(err);
         res.redirect('/campgrounds');
