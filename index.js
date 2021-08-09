@@ -1,8 +1,12 @@
+//requirements
 const express = require('express');
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
+//create model using campground schema
+const Campground = require('./models/campground');
+
 
 //set views directory
 app.set('views', path.join(__dirname, 'views'));
@@ -14,6 +18,7 @@ app.set('view engine', 'ejs');
 app.use(methodOverride('_method'));
 
 //connect mongoose, basic error handling, useCreateIndex:true to avoid deprecation warnings from MongoDB
+//local host and single DB for now
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true, 
     useUnifiedTopology: true,
@@ -23,9 +28,12 @@ mongoose.connect('mongodb://localhost:27017/yelp-camp', {
         console.log("Mongo Connection open")
     })
     .catch(err => {
-    console.log("Mongo error");
+    console.log("Mongo connection error");
     console.log(err);
 });
+
+//listener fuction to catch errors on connection
+mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 
 
 app.listen(3000, () =>{
