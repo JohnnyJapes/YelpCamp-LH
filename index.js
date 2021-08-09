@@ -13,15 +13,19 @@ app.set('view engine', 'ejs');
 //set up method override so we can use PATCH, PUT, DELETE routes
 app.use(methodOverride('_method'));
 
-//connect mongoose, basic error handling
-mongoose.connect('mongodb://localhost:27017/yelp-camp', {useNewUrlParser: true, useUnifiedTopology: true})
-.then(function(){
-    console.log("Mongo Connection open")
+//connect mongoose, basic error handling, useCreateIndex:true to avoid deprecation warnings from MongoDB
+mongoose.connect('mongodb://localhost:27017/yelp-camp', {
+    useNewUrlParser: true, 
+    useUnifiedTopology: true,
+    useCreateIndex: true
 })
-.catch(err => {
+    .then(function(){
+        console.log("Mongo Connection open")
+    })
+    .catch(err => {
     console.log("Mongo error");
     console.log(err);
-  });
+});
 
 
 app.listen(3000, () =>{
