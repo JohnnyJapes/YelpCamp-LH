@@ -33,4 +33,4 @@ const campgroundSchema = new Schema({
 
 });
 //export module so model can be used in other files
-module.exports = mongoose.model('Campground', CampgroundSchema);
+module.exports = mongoose.model('Campground', campgroundSchema);
