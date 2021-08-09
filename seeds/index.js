@@ -38,7 +38,7 @@ const seedDB = async () => {
         const temp = new Campground({
             name:`${descriptors[Math.floor(Math.random()*descriptors.length)]} ${
                 places[Math.floor(Math.random()*places.length)]}`,
-            location:`${cites[random1000].city}, ${cities[random100].state}`});
+            location:`${cities[random1000].city}, ${cities[random1000].state}`});
         await temp.save();    
     }
 };
