@@ -91,3 +91,18 @@ app.post('/campgrounds', async (req, res) => {
     res.redirect('/campgrounds');
 
 });
+//Update route
+app.put('/campgrounds/:id', async (req, res) => {
+    const {id} = req.params;
+    const {title, price, description, city, state} = req.body.campground;
+    const location = city+", "+state;
+    const product = await Campground.findByIdAndUpdate(id, {title, price, description, location }, {new: true, runValidators: true} ).exec()
+    .then((product)=>{
+        res.redirect(`/campgrounds/${product._id}`)
+    })
+    .catch(e =>{
+        console.log(e);
+        res.redirect('/campgrounds');
+    });
+    
+})
