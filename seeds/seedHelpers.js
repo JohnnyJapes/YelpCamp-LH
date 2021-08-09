@@ -1,6 +1,6 @@
 //Simple setup to create fake names for test campgrounds
 
-const descriptor = [
+module.exports.descriptors = [
     'Forest',
     'Ancient',
     'Petrified',
@@ -20,7 +20,7 @@ const descriptor = [
     'Dolphin'
 ]
 
-const places = [
+module.exports.places = [
     'Village',
     'Canyon',
     'Pond',
