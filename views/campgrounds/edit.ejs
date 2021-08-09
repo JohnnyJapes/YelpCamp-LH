@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit <%= campground.title %></title>
+</head>
+<body>
+     <%const getCity = () => {
+        let target = campground.location.search(/, /);
+        return campground.location.slice(0, target)} %>
+    <%const getState = () =>{
+        let target = campground.location.search(/, /);
+        return campground.location.slice(target+2)} %>
+    <h1><%= campground.title %> </h1>
+    <form action="/campgrounds/<%= campground._id %>?_method=PUT" method="POST">
+        <label for="title">Enter campground name:</label>
+        <input type="text" name="campground[title]" id="title" required value="<%= campground.title %>">
+        <br>
+        <label for="price">Enter campground price:</label>
+        <input type="number" name="campground[price]" id="price" step=".01" min="0" required value= "<%= parseFloat(campground.price) %>">
+        <br>
+        <label for="city">Enter campground city:</label>
+        <input type="text" name="campground[city]" id="city" required value="<%= getCity() %>">
+            
+        <br>
+        <label for="state">Enter campground state:</label>
+        <select name="campground[state]" id="state" aria-required required >
+            <% const stateNames = [
+            'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut',
+            'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas',
+            'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 
+            'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 
+            'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon',
+            'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 
+            'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
+        ];
+        
+                stateNames.forEach(state => { %>
+                    <option value="<%= state%>"
+                        <%if(state === getState()){%>
+                        selected = true
+                        <% } %>><%= state%> 
+                        </option>
+            <% }) %>
+            
+        </select>
+        <br>
+        <label for="description">Enter campground description:</label>
+        <br>
+        <textarea name="campground[description]" id="description" cols="30" rows="10" aria-placeholder="Enter campground description" placeholder="Enter campground description"></textarea>
+        <button>Submit</button>
+
+    </form>
+</body>
+</html>
