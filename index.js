@@ -53,3 +53,14 @@ app.get('/campgrounds', async (req, res) => {
     });
     res.render('campgrounds/index', {campgrounds});
 })
+
+//Show/Details route
+app.get('/campgrounds/:id', async (req, res) => {
+    const {id} = req.params;
+    const campgrounds = await Campground.findById(id).exec()
+    .catch(err =>{
+        console.log(err);
+        res.redirect('/campgrounds');
+    });
+    res.render('campgrounds/show', {campground});
+})
