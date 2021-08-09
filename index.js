@@ -43,7 +43,10 @@ app.listen(3000, () =>{
 app.get('/', (req, res) => {
     res.render('home');
 })
-
+//New route
+app.get('/campgrounds/new',(req, res) => {
+    res.render("campgrounds/new");
+})
 //index route
 app.get('/campgrounds', async (req, res) => {
     const campgrounds = await Campground.find({}).exec()
