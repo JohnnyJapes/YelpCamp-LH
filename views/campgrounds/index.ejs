@@ -10,7 +10,7 @@
     <h1>All Campgrounds</h1>
     <ul>
         <% campgrounds.forEach(element => { %>
-            <li> <%= `Name: ${element.title}, Location: ${element.location}` %> </li>
+            <li>  <a href="campgrounds/<%= element._id %>"><%= element.title %></a></li>
         <% }) %>
     </ul>
 </body>
