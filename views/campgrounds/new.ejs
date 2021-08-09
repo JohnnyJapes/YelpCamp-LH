@@ -8,18 +8,18 @@
 </head>
 <body>
     <h1>Create New Campground</h1>
-    <form action="/campgrounds" method="post">
+    <form action="/campgrounds" method="post" novalidate>
     <label for="title">Enter campground name:</label>
-    <input type="text" name="title" id="title" required>
+    <input type="text" name="campground[title]" id="title" required>
     <br>
     <label for="price">Enter campground price:</label>
-    <input type="number" name="price" id="price" step=".01" required>
+    <input type="number" name="campground[price]" id="price" step=".01" required>
     <br>
     <label for="city">Enter campground city:</label>
-    <input type="text" name="city" id="city" required>
+    <input type="text" name="campground[city]" id="city" required>
     <br>
     <label for="state">Enter campground state:</label>
-    <select name="state" id="state" aria-required required>
+    <select name="campground[state]" id="state" aria-required required>
         <% const stateNames = [
         'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut',
         'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas',
@@ -37,8 +37,8 @@
     <br>
     <label for="description">Enter campground description:</label>
     <br>
-    <textarea name="description" id="description" cols="30" rows="10" aria-placeholder="Enter campground description" placeholder="Enter campground description"></textarea>
-    <button type="submit">Submit</button>
+    <textarea name="campground[description]" id="description" cols="30" rows="10" aria-placeholder="Enter campground description" placeholder="Enter campground description"></textarea>
+    <button>Submit</button>
 
 </form>
 </body>
