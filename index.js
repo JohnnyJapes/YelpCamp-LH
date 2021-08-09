@@ -12,7 +12,7 @@ const Campground = require('./models/campground');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 //set up parsing for data types
-//app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 //app.use(express.json()) // for parsing application/json
 //set up method override so we can use PATCH, PUT, DELETE routes
 app.use(methodOverride('_method'));
@@ -42,11 +42,11 @@ app.listen(3000, () =>{
 //homepage route
 app.get('/', (req, res) => {
     res.render('home');
-})
+});
 //New route
 app.get('/campgrounds/new',(req, res) => {
     res.render("campgrounds/new");
-})
+});
 //index route
 app.get('/campgrounds', async (req, res) => {
     const campgrounds = await Campground.find({}).exec()
@@ -55,7 +55,7 @@ app.get('/campgrounds', async (req, res) => {
         res.redirect('/');
     });
     res.render('campgrounds/index', {campgrounds});
-})
+});
 
 //Show/Details route
 app.get('/campgrounds/:id', async (req, res) => {
@@ -66,4 +66,18 @@ app.get('/campgrounds/:id', async (req, res) => {
         res.redirect('/campgrounds');
     });
     res.render('campgrounds/show', {campground});
-})
+});
+//create route
+app.post('/campgrounds', async (req, res) => {
+    const {title, price, description, city, state} = req.body.campground;
+    //console.log (req.body.campground);
+    const location = city+", "+state;
+    //console.log(location);
+    await Campground.insertMany({title, price, description, location })
+    .catch(e =>{
+        console.log(e);
+        res.redirect('/campgrounds');
+    });
+    res.redirect('/campgrounds');
+
+});
