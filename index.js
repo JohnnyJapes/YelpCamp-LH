@@ -67,6 +67,16 @@ app.get('/campgrounds/:id', async (req, res) => {
     });
     res.render('campgrounds/show', {campground});
 });
+//edit route
+app.get('/campgrounds/:id/edit', async (req, res) => {
+    const {id} = req.params;
+    const campground = await Campground.findById(id).exec()
+    .catch(err =>{
+        console.log(err);
+        res.redirect('/campgrounds');
+    });
+    res.render('campgrounds/edit', {campground});
+});
 //create route
 app.post('/campgrounds', async (req, res) => {
     const {title, price, description, city, state} = req.body.campground;
