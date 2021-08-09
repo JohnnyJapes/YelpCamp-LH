@@ -7,7 +7,11 @@
     <title>Campgrounds</title>
 </head>
 <body>
-    <h1>All Camgrounds</h1>
-    <li><%= campgrounds[5].title %> </li>
+    <h1>All Campgrounds</h1>
+    <ul>
+        <% campgrounds.forEach(element => { %>
+            <li> <%= `Name: ${element.title}, Location: ${element.location}` %> </li>
+        <% }) %>
+    </ul>
 </body>
 </html>
