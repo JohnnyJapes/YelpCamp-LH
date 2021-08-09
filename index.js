@@ -39,3 +39,17 @@ mongoose.connection.on('error', console.error.bind(console, 'connection error:')
 app.listen(3000, () =>{
     console.log('Listening on Port 3000') 
 });
+//homepage route
+app.get('/', (req, res) => {
+    res.render('home');
+})
+
+//index route
+app.get('/campgrounds', async (req, res) => {
+    const campgrounds = await Campground.find({}).exec()
+    .catch(err =>{
+        console.log(err);
+        res.redirect('/');
+    });
+    res.render('campgrounds/index', {campgrounds});
+})
