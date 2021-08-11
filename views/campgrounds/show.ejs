@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= campground.title %> Details</title>
-</head>
-<body>
+<% layout('./layouts/boilerplate') -%>
+<% block('head').append(`<title>${campground.title} Details</title>`) %>
+
     <h1><%= campground.title %></h1>
     <p>Location: <%= campground.location %></p>
     <a href="/campgrounds">Return to All Campgrounds</a>
@@ -15,5 +9,5 @@
     </div>
     <form action ="/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
         <button type="submit"> Delete Campground</button></form>
-</body>
+
 </html>

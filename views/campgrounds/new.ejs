@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Campground</title>
-</head>
-<body>
+<% layout('./layouts/boilerplate') -%>
+<% block('head').append('<title>New Campground</title>') %>
     <h1>Create New Campground</h1>
     <form action="/campgrounds" method="post">
         <label for="title">Enter campground name:</label>
@@ -41,5 +34,5 @@
         <button>Submit</button>
 
     </form>
-</body>
+
 </html>

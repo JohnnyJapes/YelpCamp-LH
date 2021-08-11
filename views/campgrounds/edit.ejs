@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit <%= campground.title %></title>
-</head>
-<body>
+<% layout('./layouts/boilerplate') -%>
+<% block('head').append(`<title>Edit ${campground.title}</title>`) %>
+
      <%const getCity = () => {
         let target = campground.location.search(/, /);
         return campground.location.slice(0, target)} %>
@@ -53,5 +47,5 @@
         <button>Submit</button>
 
     </form>
-</body>
+
 </html>
