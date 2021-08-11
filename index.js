@@ -2,18 +2,21 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const ejsMate = require('ejs-mate');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 //create model using campground schema
 const Campground = require('./models/campground');
 
-
+app.engine('ejs', ejsMate); //ejs-mate setup
 //set views directory
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 //set up parsing for data types
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 //app.use(express.json()) // for parsing application/json
+app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
+app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
 //set up method override so we can use PATCH, PUT, DELETE routes
 app.use(methodOverride('_method'));
 
