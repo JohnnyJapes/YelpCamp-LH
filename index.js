@@ -62,7 +62,9 @@ app.get('/campgrounds', async (req, res) => {
 
 //Show/Details route
 app.get('/campgrounds/:id', async (req, res) => {
+    console.log("Show Route");
     const {id} = req.params;
+    console.log(id);
     const campground = await Campground.findById(id).exec()
     .catch(err =>{
         console.log(err);
@@ -82,25 +84,30 @@ app.get('/campgrounds/:id/edit', async (req, res) => {
 });
 //create route
 app.post('/campgrounds', async (req, res) => {
-    const {title, price, description, city, state} = req.body.campground;
+    const {title, price, description, city, state, image} = req.body.campground;
     //console.log (req.body.campground);
     const location = city+", "+state;
     //console.log(location);
-    await Campground.insertMany({title, price, description, location })
+     await Campground.insertMany({title, price, description, location, image })
+    .then((product)=>{
+        console.log(product);
+        res.redirect(`/campgrounds/${product[0]._id}`)
+    })
     .catch(e =>{
         console.log(e);
         res.redirect('/campgrounds');
     });
-    res.redirect('/campgrounds');
+    //res.redirect('/campgrounds/');
 
 });
 //Update route
 app.put('/campgrounds/:id', async (req, res) => {
     const {id} = req.params;
-    const {title, price, description, city, state} = req.body.campground;
+    const {title, price, description, city, state, image} = req.body.campground;
     const location = city+", "+state;
-    const product = await Campground.findByIdAndUpdate(id, {title, price, description, location }, {new: true, runValidators: true} ).exec()
+    const product = await Campground.findByIdAndUpdate(id, {title, price, description, location, image }, {new: true, runValidators: true} ).exec()
     .then((product)=>{
+        console.log(product);
         res.redirect(`/campgrounds/${product._id}`)
     })
     .catch(e =>{
