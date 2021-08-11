@@ -1,8 +1,29 @@
 <% layout('./layouts/boilerplate') -%>
 <% block('head').append('<title>All Campgrounds</title>') %>
 
-    <h1>All Campgrounds</h1>
-    <div><a href="/campgrounds/new">Add campground</a></div>
+    <h1 class="text-center">All Campgrounds</h1>
+    <div class="container-fluid px-3 overflow-hidden">
+        <div class="row justify-content-around gy-2 ">
+            <% campgrounds.forEach(element => { %>
+                <div class="col d-flex justify-content-evenly">
+                    <div class="card h-100 " style="width:15rem;">
+                        <div class="card-body">
+                          <h5 class="card-title"><%= element.title %></h5>
+                          <p class="card-text">Location: <%= element.location %></p>
+                          
+                        </div>
+                        <div class="card-footer">
+                            <a href="/campgrounds/<%= element._id %>" class="btn btn-primary position-static bottom-0">Details</a>
+                        </div>
+                      </div>
+                </div>
+                <!-- <li>  <a href="/campgrounds/<%= element._id %>"><%= element.title %></a></li> -->
+            <% }) %>
+            
+
+
+    </div>
+    
     <ul>
         <% campgrounds.forEach(element => { %>
             <li>  <a href="/campgrounds/<%= element._id %>"><%= element.title %></a></li>

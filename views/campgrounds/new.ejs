@@ -1,37 +1,94 @@
 <% layout('./layouts/boilerplate') -%>
 <% block('head').append('<title>New Campground</title>') %>
-    <h1>Create New Campground</h1>
+    <h1 class="text-center">New Campground</h1>
+    <div class="container w-50">
     <form action="/campgrounds" method="post">
-        <label for="title">Enter campground name:</label>
-        <input type="text" name="campground[title]" id="title" required>
-        <br>
-        <label for="price">Enter campground price:</label>
-        <input type="number" name="campground[price]" id="price" step=".01" min=".01" required>
-        <br>
-        <label for="city">Enter campground city:</label>
-        <input type="text" name="campground[city]" id="city" required>
-        <br>
-        <label for="state">Enter campground state:</label>
-        <select name="campground[state]" id="state" aria-required required>
-            <% const stateNames = [
-            'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut',
-            'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas',
-            'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 
-            'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 
-            'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon',
-            'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 
-            'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-        ];
-                stateNames.forEach(state => { %>
-                    <option value="<%= state%>"><%= state%></option>
-            <% }) %>
+        
+        <div class="row mb-3 justify-content-center">
             
-        </select>
-        <br>
-        <label for="description">Enter campground description:</label>
-        <br>
-        <textarea name="campground[description]" id="description" cols="30" rows="10" aria-placeholder="Enter campground description" placeholder="Enter campground description"></textarea>
-        <button>Submit</button>
+            <div class="col-lg-6">
+                <label for="title" class="form-label">Campground Name</label>
+                <input type="text" class="form-control" id="title" aria-describedby="titleHelp" name="campground[title]">
+                <div id="titleHelp" class="form-text">Please enter a suitable name for your camp.</div>
+            </div> 
+            <div class="col-lg-6">
+                <label for="price" class="form-label">Campground Price</label>
+                <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    
+                <input type="number" name="campground[price]" id="price" step=".01" min=".01" required class="form-control" aria-describedby="priceHelp">
+                
+                </div>
+                <div id="priceHelp" class="form-text">Please enter a price.</div>
+                
+            </div> 
+            
+        </div>
+        <row class="row mb-3">
+            <div class="col-lg-6">
+                <label for="city" class="form-label">Campground City</label>
+                <input type="text" name="campground[city]" id="city" required class="form-control" aria-describedby="cityHelp">
+                <div id="cityHelp" class="form-text">Please enter the city your camp is located in.</div>
+                
+            </div> 
+            <state class="col-lg-6">
+                <label for="state" class="form-label">Campground State</label>
+                <select name="campground[state]" id="state" aria-required required class="form-select" aria-describedby="stateHelp">
+                    <% const stateNames = [
+                    'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut',
+                    'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas',
+                    'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 
+                    'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 
+                    'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon',
+                    'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 
+                    'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
+                ];
+                        stateNames.forEach(state => { %>
+                            <option value="<%= state%>"><%= state%></option>
+                    <% }) %>
+                </select>
+                <div id="stateHelp" class="form-text">Please enter the state your camp is located in.</div>
+            </state> 
+            
+        </row>
+        <div class="row mb-3 ">
+            <div class="col-lg-6">
+                <label for="description" class="form-label">Enter campground description:</label>
+                <textarea class="form-control" name="campground[description]" id="description" cols="30" rows="3" aria-placeholder="Enter campground description" placeholder="Enter campground description"></textarea>
+            </div>
+            <div class="col-lg-6">
+                <label for="image" class="form-label">Image URL</label>
+                <input type="text" class="form-control" id="image" aria-describedby="imageHelp" name="campground[image]">
+                <div id="imageHelp" class="form-text">Please enter a image URL for your camp.</div>
+            </div> 
+            
+            
+        </div>
+        <div class="row mb-3">
+            <div class="col-lg-3">
+            <button class="btn btn-success">Add Campground</button>
+            
+            </div>
+          
+        </div>
+        
+        
+    </div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+       
+        
 
     </form>
 
