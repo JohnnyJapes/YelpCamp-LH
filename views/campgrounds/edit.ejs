@@ -13,7 +13,7 @@
         <input type="text" name="campground[title]" id="title" required value="<%= campground.title %>">
         <br>
         <label for="price">Enter campground price:</label>
-        <input type="number" name="campground[price]" id="price" step=".01" min="0" required value= "<%= parseFloat(campground.price) %>">
+        <input type="number" name="campground[price]" id="price" step=".01" min="0" required value= "<%= campground.price.toFixed(2) %>">
         <br>
         <label for="city">Enter campground city:</label>
         <input type="text" name="campground[city]" id="city" required value="<%= getCity() %>">
