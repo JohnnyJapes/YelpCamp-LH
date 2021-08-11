@@ -1,14 +1,31 @@
 <% layout('./layouts/boilerplate') -%>
 <% block('head').append(`<title>${campground.title} Details</title>`) %>
 
-    <h1><%= campground.title %></h1>
-    <p>Location: <%= campground.location %></p>
-    <img class="mh-50 w-50" src="<%= campground.image %>" alt="">
-    <p><%= campground.description %> </p>
-    <div>
-        <a class="btn btn-primary" role="button"href="/campgrounds/<%= campground._id %>/edit">Edit Campground</a>
-    </div>
-    <form action ="/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
-        <button class="btn btn-danger" type="submit"> Delete Campground</button></form>
 
-</html>
+<div class="row mb-3">
+    <div class="col-6 offset-3">
+        <div class="card">
+            <img src="<%= campground.image %>" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title"><%= campground.title %> </h5>
+              <p class="card-text"> <%= campground.description %></p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Location: <%= campground.location %></li>
+              <li class="list-group-item">Price: $<%= campground.price.toFixed(2) %>/night</li>
+            </ul>
+            <div class="card-body ">
+                <div class="row justify-content-center">
+                    <div class="col d-flex justify-content-center">
+                        <a class="btn btn-primary" role="button"href="/campgrounds/<%= campground._id %>/edit">Edit Campground</a>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <form action ="/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
+                            <button class="btn btn-danger" type="submit"> Delete Campground</button></form>
+                    </div>
+                </div>
+               
+                
+            </div>
+          </div>
+    </div>
