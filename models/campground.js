@@ -9,7 +9,7 @@ const campgroundSchema = new Schema({
         type: String,
     },
     price:{
-        type: String
+        type: Number
     },
     description:{
         type: String  
@@ -17,6 +17,9 @@ const campgroundSchema = new Schema({
     location:{
         type: String
     },
+    image:{
+        type: String
+    }
     /* score:{
         type: Number
     },
