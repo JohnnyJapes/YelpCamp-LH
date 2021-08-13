@@ -41,6 +41,28 @@ mongoose.connect('mongodb://localhost:27017/yelp-camp', {
 //listener fuction to catch errors on connection
 mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 
+function validateCampground(req, res, next){
+    const campgroundSchema = Joi.object({
+        campground: Joi.object({
+            title: Joi.string().required(),
+            price: Joi.number().required().min(0),
+            location: Joi.object({
+                city: Joi.string().required(),
+                state: Joi.string().required()
+            }).required(),
+            image: Joi.string().required(),
+            description: Joi.string().required()
+        }).required()
+    });
+    const {error} = campgroundSchema.validate(req.body);
+    if(error){ 
+        const msg = error.details.map(er => er.message).join (',');
+        throw new ExpressError(msg, 400);
+    }
+    else next();
+};
+
+
 
 app.listen(3000, () =>{
     console.log('Listening on Port 3000') 
@@ -88,26 +110,24 @@ app.get('/campgrounds/:id/edit', catchAsync(async (req, res, next) => {
 }));
 
 //create route
-app.post('/campgrounds', catchAsync(async (req, res, next) => {
-    if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
-    const {title, price, description, city, state, image} = req.body.campground;
-    // const location = city+", "+state;
-    const location = {city, state};
+app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) => {
+    // if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
+    
 
-     await Campground.insertMany({title, price, description, location, image })
+     await Campground.insertMany(req.body.campground)
     .then((camp)=>{
         console.log(camp);
         res.redirect(`/campgrounds/${camp[0]._id}`)
     })
 }));
 //Update route
-app.put('/campgrounds/:id', catchAsync(async (req, res, next) => {
-    if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
+app.put('/campgrounds/:id', validateCampground, catchAsync(async (req, res, next) => {
+    //if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
     const {id} = req.params;
-    const {title, price, description, city, state, image} = req.body.campground;
+    //const {title, price, description, city, state, image} = req.body.campground;
     //const location = city+", "+state;
-    const location = {city, state};
-    const campground = await Campground.findByIdAndUpdate(id, {title, price, description, location, image }, {new: true, runValidators: true} ).exec()
+    //const location = {city, state};
+    const campground = await Campground.findByIdAndUpdate(id, req.body.campground, {new: true, runValidators: true} ).exec()
     .then((campground)=>{
         if(!campground) throw new ExpressError("Invalid Campground Data", 400);
         else

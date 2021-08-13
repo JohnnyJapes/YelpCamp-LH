@@ -30,14 +30,14 @@
         <row class="row mb-3">
             <div class="col-lg-6">
                 <label for="city" class="form-label">Campground City</label>
-                <input type="text" name="campground[city]" id="city" required class="form-control" aria-describedby="cityHelp" value="<%= campground.location.city %>">
+                <input type="text" name="campground[location][city]" id="city" required class="form-control" aria-describedby="cityHelp" value="<%= campground.location.city %>">
                 <div class="valid-feedback">All good!</div>
                 <div id="cityHelp" class="invalid-feedback">Please enter the city your camp is located in.</div>
                 
             </div> 
             <state class="col-lg-6">
                 <label for="state" class="form-label">Campground State</label>
-                <select name="campground[state]" id="state" aria-required required class="form-select" aria-describedby="stateHelp">
+                <select name="campground[location][state]" id="state" aria-required required class="form-select" aria-describedby="stateHelp">
                     <% const stateNames = [
                     'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut',
                     'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas',
