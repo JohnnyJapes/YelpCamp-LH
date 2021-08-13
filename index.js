@@ -58,12 +58,6 @@ app.get('/campgrounds', catchAsync(async (req, res, next) => {
     .then((campgrounds)=> {
         res.render('campgrounds/index', {campgrounds});
     })
-    // .catch(err =>{
-    //     console.log(err);
-    //     next(err)
-    //     //res.redirect('/');
-    // });
-    
 }));
 
 //Show/Details route
@@ -79,8 +73,6 @@ app.get('/campgrounds/:id', catchAsync(async (req, res, next) => {
         else
         res.render('campgrounds/show', {campground});
     })
-   
-    
 })
 );
 //edit route
@@ -92,31 +84,17 @@ app.get('/campgrounds/:id/edit', catchAsync(async (req, res, next) => {
         else
         res.render('campgrounds/edit', {campground});
     })
-    // .catch(err =>{
-    //     console.log(err);
-    //     next(err);
-    //     //res.redirect('/campgrounds');
-    // });
-    //res.render('campgrounds/edit', {campground});
 }));
 //create route
 app.post('/campgrounds', catchAsync(async (req, res, next) => {
     if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
     const {title, price, description, city, state, image} = req.body.campground;
-    //console.log (req.body.campground);
     const location = city+", "+state;
-    //console.log(location);
      await Campground.insertMany({title, price, description, location, image })
     .then((camp)=>{
         console.log(camp);
         res.redirect(`/campgrounds/${camp[0]._id}`)
     })
-    // .catch(e =>{
-    //     console.log(e);
-    //     next(e);
-    // });
-    //res.redirect('/campgrounds/');
-
 }));
 //Update route
 app.put('/campgrounds/:id', catchAsync(async (req, res, next) => {
@@ -130,11 +108,6 @@ app.put('/campgrounds/:id', catchAsync(async (req, res, next) => {
         else
         res.redirect(`/campgrounds/${campground._id}`)
     })
-    // .catch(e =>{
-    //     next(e);
-    //     //res.redirect('/campgrounds');
-    // });
-    
 }));
 //delete
 app.delete('/campgrounds/:id', catchAsync(async (req, res,next) => {
@@ -146,13 +119,7 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res,next) => {
         if(!campground) throw new ExpressError("Page not Found", 404);
         else
         res.redirect(`/campgrounds`)
-    })
-    // .catch(e =>{
-    //     next(e)
-    //     //console.log(e);
-    //     //res.redirect('/campgrounds');
-    // });
-    
+    })   
 }))
 
 
@@ -167,7 +134,7 @@ app.all('*', (req, res, next)=>{
 })
 
 const handleValidationErr = err => {
-    console.dir(err);
+    //console.dir(err);
     //In a real app, we would do a lot more here...
     //console.log("return object start ----------------------");
     return new ExpressError(`Validation Failed...${err.message}`, 400)
@@ -182,16 +149,8 @@ app.use((err, req, res, next) => {
 
 //basic custom error handling
 app.use((err, req, res, next) => {
-    //console.log("basic error start ----------------------");
-    //const { status = 500, message = 'Something went wrong' , cause = 'unknown'} = err;
     if (!err.status) err.status = 500;
     if (!err.message) err.message = 'Something went wrong';
     console.dir(err);
-    //console.log("BASIC ERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR " +err)
-    //res.status(status).send(message);
     res.render('error', {err})
-    
-    // setTimeout(function(){
-    //     res.redirect('/campgrounds')}
-    //     , 5000)
 })
