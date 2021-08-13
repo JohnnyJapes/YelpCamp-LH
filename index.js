@@ -86,11 +86,14 @@ app.get('/campgrounds/:id/edit', catchAsync(async (req, res, next) => {
         res.render('campgrounds/edit', {campground});
     })
 }));
+
 //create route
 app.post('/campgrounds', catchAsync(async (req, res, next) => {
     if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
     const {title, price, description, city, state, image} = req.body.campground;
-    const location = city+", "+state;
+    // const location = city+", "+state;
+    const location = {city, state};
+
      await Campground.insertMany({title, price, description, location, image })
     .then((camp)=>{
         console.log(camp);
@@ -102,7 +105,8 @@ app.put('/campgrounds/:id', catchAsync(async (req, res, next) => {
     if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
     const {id} = req.params;
     const {title, price, description, city, state, image} = req.body.campground;
-    const location = city+", "+state;
+    //const location = city+", "+state;
+    const location = {city, state};
     const campground = await Campground.findByIdAndUpdate(id, {title, price, description, location, image }, {new: true, runValidators: true} ).exec()
     .then((campground)=>{
         if(!campground) throw new ExpressError("Invalid Campground Data", 400);

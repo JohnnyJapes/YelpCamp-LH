@@ -17,7 +17,8 @@ const campgroundSchema = new Schema({
         type: String  
     },
     location:{
-        type: String
+        city: String,
+        state: String
     },
     image:{
         type: String
