@@ -1,5 +1,15 @@
 <% layout('./layouts/boilerplate') -%>
 <% block('head').append('<title>Error</title>') %>
 
-<h1>Status: <%= status %> </h1>
-<h2><%= message %> </h2>
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">Status: <%= err.status %></h4>
+                <p><%= err.message %></p>
+                <hr>
+                <p><%= err.stack %></p>
+        </div>
+        
+    </div>
+
+</div>

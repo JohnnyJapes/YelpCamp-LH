@@ -5,6 +5,8 @@ const path = require('path');
 const ejsMate = require('ejs-mate');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
+const ExpressError = require('./utils/expressError');
+const catchAsync = require('./utils/catchAsync')
 //create model using campground schema
 const Campground = require('./models/campground');
 
@@ -159,12 +161,12 @@ const handleValidationErr = err => {
     console.dir(err);
     //In a real app, we would do a lot more here...
     //console.log("return object start ----------------------");
-    return {message:`Validation Failed...${err.message}`, status:400}
+    return new ExpressError(`Validation Failed...${err.message}`, 400)
 }
-
+//route to throw error and trigger error page
 app.get('/debugError',(req, res, next) => {
     
-    throw 'Oopsie';
+    throw {name:'ValidationError', message:'Campground validation failed'};
 })
 app.use((err, req, res, next) => {
     console.log(err.name);
@@ -176,9 +178,10 @@ app.use((err, req, res, next) => {
 //basic custom error handling
 app.use((err, req, res, next) => {
     //console.log("basic error start ----------------------");
-    const { status = 500, message = 'Something went wrong' } = err;
+    const { status = 500, message = 'Something went wrong' , cause = 'unknown'} = err;
+    //console.log("BASIC ERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR " +err)
     //res.status(status).send(message);
-    res.render('error', {status, message})
+    res.render('error', {err})
     
     // setTimeout(function(){
     //     res.redirect('/campgrounds')}
