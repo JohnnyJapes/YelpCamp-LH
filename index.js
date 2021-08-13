@@ -61,17 +61,31 @@ app.get('/campgrounds', async (req, res) => {
 });
 
 //Show/Details route
-app.get('/campgrounds/:id', async (req, res) => {
+app.get('/campgrounds/:id', async (req, res, next) => {
     console.log("Show Route");
+    // try{
     const {id} = req.params;
     console.log(id);
+    // try{
+    // const campground = await Campground.findById(id)
+    // console.log('test')
+    // res.render('campgrounds/show', {campground});
+    // }
+    // catch(err){
+    //     next(err);
+    // }
     const campground = await Campground.findById(id).exec()
-    .catch(err =>{
-        console.log(err);
-        res.redirect('/campgrounds');
-    });
-    res.render('campgrounds/show', {campground});
-});
+    .then(function(campground){
+        res.render('campgrounds/show', {campground});
+    })
+     .catch(err =>{
+        //console.log(err);
+        next(err);
+        //res.redirect('/campgrounds');
+    }); 
+    
+}
+);
 //edit route
 app.get('/campgrounds/:id/edit', async (req, res) => {
     const {id} = req.params;
@@ -89,9 +103,9 @@ app.post('/campgrounds', async (req, res) => {
     const location = city+", "+state;
     //console.log(location);
      await Campground.insertMany({title, price, description, location, image })
-    .then((product)=>{
-        console.log(product);
-        res.redirect(`/campgrounds/${product[0]._id}`)
+    .then((camp)=>{
+        console.log(camp);
+        res.redirect(`/campgrounds/${camp[0]._id}`)
     })
     .catch(e =>{
         console.log(e);
@@ -126,4 +140,25 @@ app.delete('/campgrounds/:id', async (req, res) => {
         res.redirect('/campgrounds');
     });
     res.redirect(`/campgrounds`)
+})
+const handleValidationErr = err => {
+    console.dir(err);
+    //In a real app, we would do a lot more here...
+    return new AppError(`Validation Failed...${err.message}`, 400)
+}
+
+
+app.use((err, req, res, next) => {
+    console.log(err.name);
+    if (err.name === 'ValidationError') err = handleValidationErr(err);
+})
+
+
+//basic custom error handling
+app.use((err, req, res, next) => {
+    const { status = 500, message = 'Something went wrong' } = err;
+    //res.status(status).send(message);
+    setTimeout(function(){
+        res.redirect('/campgrounds')}
+        , 3000)
 })
