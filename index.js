@@ -101,6 +101,7 @@ app.get('/campgrounds/:id/edit', catchAsync(async (req, res, next) => {
 }));
 //create route
 app.post('/campgrounds', catchAsync(async (req, res, next) => {
+    if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
     const {title, price, description, city, state, image} = req.body.campground;
     //console.log (req.body.campground);
     const location = city+", "+state;
@@ -119,12 +120,13 @@ app.post('/campgrounds', catchAsync(async (req, res, next) => {
 }));
 //Update route
 app.put('/campgrounds/:id', catchAsync(async (req, res, next) => {
+    if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
     const {id} = req.params;
     const {title, price, description, city, state, image} = req.body.campground;
     const location = city+", "+state;
     const campground = await Campground.findByIdAndUpdate(id, {title, price, description, location, image }, {new: true, runValidators: true} ).exec()
     .then((campground)=>{
-        if(!campground) throw new ExpressError("Page not Found", 404);
+        if(!campground) throw new ExpressError("Invalid Campground Data", 400);
         else
         res.redirect(`/campgrounds/${campground._id}`)
     })
