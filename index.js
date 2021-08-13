@@ -53,7 +53,7 @@ app.get('/campgrounds/new',(req, res) => {
     res.render("campgrounds/new");
 });
 //index route
-app.get('/campgrounds', async (req, res) => {
+app.get('/campgrounds', async (req, res, next) => {
     const campgrounds = await Campground.find({}).exec()
     .then((campgrounds)=> {
         res.render('campgrounds/index', {campgrounds});
@@ -82,6 +82,8 @@ app.get('/campgrounds/:id', async (req, res, next) => {
     // }
     const campground = await Campground.findById(id).exec()
     .then(function(campground){
+        if(!campground) throw new ExpressError("Id not Found", 400);
+        else
         res.render('campgrounds/show', {campground});
     })
      .catch(err =>{
@@ -93,7 +95,7 @@ app.get('/campgrounds/:id', async (req, res, next) => {
 }
 );
 //edit route
-app.get('/campgrounds/:id/edit', async (req, res) => {
+app.get('/campgrounds/:id/edit', async (req, res, next) => {
     const {id} = req.params;
     const campground = await Campground.findById(id).exec()
     .then(function(campground){
@@ -125,13 +127,13 @@ app.post('/campgrounds', async (req, res, next) => {
 
 });
 //Update route
-app.put('/campgrounds/:id', async (req, res) => {
+app.put('/campgrounds/:id', async (req, res, next) => {
     const {id} = req.params;
     const {title, price, description, city, state, image} = req.body.campground;
     const location = city+", "+state;
-    const product = await Campground.findByIdAndUpdate(id, {title, price, description, location, image }, {new: true, runValidators: true} ).exec()
-    .then((product)=>{
-        console.log(product);
+    const campground = await Campground.findByIdAndUpdate(id, {title, price, description, location, image }, {new: true, runValidators: true} ).exec()
+    .then((campground)=>{
+        console.log(campground);
         res.redirect(`/campgrounds/${product._id}`)
     })
     .catch(e =>{
@@ -141,20 +143,23 @@ app.put('/campgrounds/:id', async (req, res) => {
     
 });
 //delete
-app.delete('/campgrounds/:id', async (req, res) => {
+app.delete('/campgrounds/:id', catchAsync(async (req, res,next) => {
     console.log("delete");
     const {id} = req.params;
-    const product = await Campground.findByIdAndDelete(id).exec()
-    .then(()=>{
+    console.log(id);
+    const campground = await Campground.findByIdAndDelete(id).exec()
+    .then((campground)=>{
+        if(!campground) throw new ExpressError("Id not Found", 400);
+        else
         res.redirect(`/campgrounds`)
     })
-    .catch(e =>{
-        next(e)
-        //console.log(e);
-        //res.redirect('/campgrounds');
-    });
+    // .catch(e =>{
+    //     next(e)
+    //     //console.log(e);
+    //     //res.redirect('/campgrounds');
+    // });
     
-})
+}))
 
 //app.get('/error', )
 const handleValidationErr = err => {
@@ -179,6 +184,7 @@ app.use((err, req, res, next) => {
 app.use((err, req, res, next) => {
     //console.log("basic error start ----------------------");
     const { status = 500, message = 'Something went wrong' , cause = 'unknown'} = err;
+    console.dir(err);
     //console.log("BASIC ERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR " +err)
     //res.status(status).send(message);
     res.render('error', {err})
