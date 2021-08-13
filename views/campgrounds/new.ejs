@@ -2,14 +2,15 @@
 <% block('head').append('<title>New Campground</title>') %>
     <h1 class="text-center">New Campground</h1>
     <div class="container w-50">
-    <form action="/campgrounds" method="post">
+    <form action="/campgrounds" method="post" class="needs-validation" novalidate>
         
         <div class="row mb-3 justify-content-center">
             
             <div class="col-lg-6">
                 <label for="title" class="form-label">Campground Name</label>
-                <input type="text" class="form-control" id="title" aria-describedby="titleHelp" name="campground[title]">
-                <div id="titleHelp" class="form-text">Please enter a suitable name for your camp.</div>
+                <input type="text" required class="form-control" id="title" aria-describedby="titleHelp" name="campground[title]">
+                <div class="valid-feedback">All good!</div>
+                <div id="titleHelp" class="invalid-feedback">Please enter a suitable name for your camp.</div>
             </div> 
             <div class="col-lg-6">
                 <label for="price" class="form-label">Campground Price</label>
@@ -17,9 +18,10 @@
                     <span class="input-group-text">$</span>
                     
                 <input type="number" name="campground[price]" id="price" step=".01" min=".01" required class="form-control" aria-describedby="priceHelp">
-                
+                <div class="valid-feedback">All good!</div>
+                <div id="priceHelp" class="invalid-feedback">Please enter a price.</div>
                 </div>
-                <div id="priceHelp" class="form-text">Please enter a price.</div>
+               
                 
             </div> 
             
@@ -28,7 +30,8 @@
             <div class="col-lg-6">
                 <label for="city" class="form-label">Campground City</label>
                 <input type="text" name="campground[city]" id="city" required class="form-control" aria-describedby="cityHelp">
-                <div id="cityHelp" class="form-text">Please enter the city your camp is located in.</div>
+                <div class="valid-feedback">All good!</div>
+                <div id="cityHelp" class="invalid-feedback">Please enter the city your camp is located in.</div>
                 
             </div> 
             <state class="col-lg-6">
@@ -47,26 +50,30 @@
                             <option value="<%= state%>"><%= state%></option>
                     <% }) %>
                 </select>
-                <div id="stateHelp" class="form-text">Please enter the state your camp is located in.</div>
+                <div class="valid-feedback">All good!</div>
+                <div id="stateHelp" class="invalid-feedback">Please select the state your camp is located in.</div>
             </state> 
             
         </row>
         <div class="row mb-3 ">
             <div class="col-lg-6">
-                <label for="description" class="form-label">Enter campground description:</label>
-                <textarea class="form-control" name="campground[description]" id="description" cols="30" rows="3" aria-placeholder="Enter campground description" placeholder="Enter campground description"></textarea>
+                <label for="description" class="form-label" >Enter campground description:</label>
+                <textarea class="form-control" name="campground[description]" id="description" cols="30" rows="3" aria-placeholder="Enter campground description" placeholder="Enter campground description" required></textarea>
+                <div class="valid-feedback">All good!</div>
+                <div id="imageHelp" class="invalid-feedback">Please enter a description for your camp.</div>
             </div>
             <div class="col-lg-6">
                 <label for="image" class="form-label">Image URL</label>
-                <input type="text" class="form-control" id="image" aria-describedby="imageHelp" name="campground[image]">
-                <div id="imageHelp" class="form-text">Please enter a image URL for your camp.</div>
+                <input type="text" class="form-control" id="image" aria-describedby="imageHelp" name="campground[image]" required>
+                <div class="valid-feedback">All good!</div>
+                <div id="imageHelp" class="invalid-feedback">Please enter a image URL for your camp.</div>
             </div> 
             
             
         </div>
         <div class="row mb-3">
             <div class="col-lg-3">
-            <button class="btn btn-success">Add Campground</button>
+            <button class="btn btn-success" type="submit">Add Campground</button>
             
             </div>
           
@@ -74,6 +81,29 @@
         
         
     </div>
+<script>
+     
+    (function () {
+    'use strict'
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation')
+
+    // Loop over them and prevent submission
+    Array.from(forms)
+        .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+            }
+
+            form.classList.add('was-validated')
+        }, false)
+        })
+    })()
+    
+</script>
         
         
         
