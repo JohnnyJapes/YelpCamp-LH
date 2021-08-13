@@ -4,6 +4,7 @@ const app = express();
 const path = require('path');
 const ejsMate = require('ejs-mate');
 const mongoose = require('mongoose');
+const Joi = require('joi');
 const methodOverride = require('method-override');
 const ExpressError = require('./utils/expressError');
 const catchAsync = require('./utils/catchAsync')
