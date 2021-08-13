@@ -160,7 +160,7 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res,next) => {
 //route to throw error and trigger error page
 app.get('/debugError',(req, res, next) => {
     
-    throw {name:'ValidationError', message:'Campground validation failed'};
+    throw new ExpressError();
 })
 app.all('*', (req, res, next)=>{
     throw new ExpressError("Page not Found", 404);
@@ -183,7 +183,9 @@ app.use((err, req, res, next) => {
 //basic custom error handling
 app.use((err, req, res, next) => {
     //console.log("basic error start ----------------------");
-    const { status = 500, message = 'Something went wrong' , cause = 'unknown'} = err;
+    //const { status = 500, message = 'Something went wrong' , cause = 'unknown'} = err;
+    if (!err.status) err.status = 500;
+    if (!err.message) err.message = 'Something went wrong';
     console.dir(err);
     //console.log("BASIC ERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR " +err)
     //res.status(status).send(message);
