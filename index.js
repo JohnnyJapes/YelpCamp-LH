@@ -53,11 +53,15 @@ app.get('/campgrounds/new',(req, res) => {
 //index route
 app.get('/campgrounds', async (req, res) => {
     const campgrounds = await Campground.find({}).exec()
+    .then((campgrounds)=> {
+        res.render('campgrounds/index', {campgrounds});
+    })
     .catch(err =>{
         console.log(err);
-        res.redirect('/');
+        next(err)
+        //res.redirect('/');
     });
-    res.render('campgrounds/index', {campgrounds});
+    
 });
 
 //Show/Details route
@@ -90,14 +94,18 @@ app.get('/campgrounds/:id', async (req, res, next) => {
 app.get('/campgrounds/:id/edit', async (req, res) => {
     const {id} = req.params;
     const campground = await Campground.findById(id).exec()
+    .then(function(campground){
+        res.render('campgrounds/edit', {campground});
+    })
     .catch(err =>{
         console.log(err);
-        res.redirect('/campgrounds');
+        next(err);
+        //res.redirect('/campgrounds');
     });
-    res.render('campgrounds/edit', {campground});
+    //res.render('campgrounds/edit', {campground});
 });
 //create route
-app.post('/campgrounds', async (req, res) => {
+app.post('/campgrounds', async (req, res, next) => {
     const {title, price, description, city, state, image} = req.body.campground;
     //console.log (req.body.campground);
     const location = city+", "+state;
@@ -109,7 +117,7 @@ app.post('/campgrounds', async (req, res) => {
     })
     .catch(e =>{
         console.log(e);
-        res.redirect('/campgrounds');
+        next(e);
     });
     //res.redirect('/campgrounds/');
 
@@ -125,8 +133,8 @@ app.put('/campgrounds/:id', async (req, res) => {
         res.redirect(`/campgrounds/${product._id}`)
     })
     .catch(e =>{
-        console.log(e);
-        res.redirect('/campgrounds');
+        next(e);
+        //res.redirect('/campgrounds');
     });
     
 });
@@ -135,30 +143,44 @@ app.delete('/campgrounds/:id', async (req, res) => {
     console.log("delete");
     const {id} = req.params;
     const product = await Campground.findByIdAndDelete(id).exec()
+    .then(()=>{
+        res.redirect(`/campgrounds`)
+    })
     .catch(e =>{
-        console.log(e);
-        res.redirect('/campgrounds');
+        next(e)
+        //console.log(e);
+        //res.redirect('/campgrounds');
     });
-    res.redirect(`/campgrounds`)
+    
 })
+
+//app.get('/error', )
 const handleValidationErr = err => {
     console.dir(err);
     //In a real app, we would do a lot more here...
-    return new AppError(`Validation Failed...${err.message}`, 400)
+    //console.log("return object start ----------------------");
+    return {message:`Validation Failed...${err.message}`, status:400}
 }
 
-
+app.get('/debugError',(req, res, next) => {
+    
+    throw 'Oopsie';
+})
 app.use((err, req, res, next) => {
     console.log(err.name);
     if (err.name === 'ValidationError') err = handleValidationErr(err);
+    next(err);
 })
 
 
 //basic custom error handling
 app.use((err, req, res, next) => {
+    //console.log("basic error start ----------------------");
     const { status = 500, message = 'Something went wrong' } = err;
     //res.status(status).send(message);
-    setTimeout(function(){
-        res.redirect('/campgrounds')}
-        , 3000)
+    res.render('error', {status, message})
+    
+    // setTimeout(function(){
+    //     res.redirect('/campgrounds')}
+    //     , 5000)
 })
