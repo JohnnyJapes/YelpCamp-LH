@@ -89,7 +89,7 @@ app.get('/campgrounds/:id', catchAsync(async (req, res, next) => {
     const {id} = req.params;
     console.log(id);
     
-    const campground = await Campground.findById(id)
+    const campground = await Campground.findById(id).populate('reviews')
     .then(function(campground){
         if(!campground) throw new ExpressError("Page not Found", 404);
         else
