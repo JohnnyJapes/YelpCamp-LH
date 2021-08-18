@@ -11,6 +11,7 @@ const ExpressError = require('./utils/expressError');
 const catchAsync = require('./utils/catchAsync')
 //create model using campground schema
 const Campground = require('./models/campground');
+const Review = require('./models/review');
 
 app.engine('ejs', ejsMate); //ejs-mate setup
 //set views directory
@@ -41,9 +42,18 @@ mongoose.connect('mongodb://localhost:27017/yelp-camp', {
 
 //listener fuction to catch errors on connection
 mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
-
+//function to validate campground data using Joi
 function validateCampground(req, res, next){
     const {error} = campgroundSchema.validate(req.body);
+    if(error){ 
+        const msg = error.details.map(er => er.message).join (',');
+        throw new ExpressError(msg, 400);
+    }
+    else next();
+};
+//Function to validate review data using Joi
+function validateReview(req, res, next){
+    const {error} = reviewSchema.validate(req.body);
     if(error){ 
         const msg = error.details.map(er => er.message).join (',');
         throw new ExpressError(msg, 400);
@@ -110,7 +120,18 @@ app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) =
     })
 }));
 //create route - REVIEW
-
+app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async (req, res, next) => {
+    const {id} = req.params;
+    const campground = await Campground.findById(id);
+    const review = await new Review(req.body.review)
+    campground.reviews.push(review);
+    await review.save();
+    await campground.save()
+    .then((rev)=>{
+        console.log(rev);
+        res.redirect(`/campgrounds/${id}`)
+    })
+}));
 //Update route
 app.put('/campgrounds/:id', validateCampground, catchAsync(async (req, res, next) => {
     //if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);

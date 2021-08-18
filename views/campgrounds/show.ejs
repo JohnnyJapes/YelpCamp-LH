@@ -32,7 +32,7 @@
 <div class="row">
     <div class="col-6 offset-3">
         <h4>Leave a review!</h4>
-        <form action="/campgrounds/:id/reviews/new" method="post">
+        <form action="/campgrounds/<%=campground._id%>/reviews" method="post">
             <label for="rating" class="form-label">Rating</label>
             <div class="row">
                 <div class="col-1 text-center">
