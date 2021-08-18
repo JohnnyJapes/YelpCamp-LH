@@ -5,7 +5,7 @@ const path = require('path');
 const ejsMate = require('ejs-mate');
 const mongoose = require('mongoose');
 const Joi = require('joi');
-const {campgroundSchema} = require('./schemas/schemas')
+const {campgroundSchema, reviewSchema} = require('./schemas/schemas')
 const methodOverride = require('method-override');
 const ExpressError = require('./utils/expressError');
 const catchAsync = require('./utils/catchAsync')
@@ -98,7 +98,7 @@ app.get('/campgrounds/:id/edit', catchAsync(async (req, res, next) => {
     })
 }));
 
-//create route
+//create route - Campground
 app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) => {
     // if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
     
@@ -109,6 +109,8 @@ app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) =
         res.redirect(`/campgrounds/${camp[0]._id}`)
     })
 }));
+//create route - REVIEW
+
 //Update route
 app.put('/campgrounds/:id', validateCampground, catchAsync(async (req, res, next) => {
     //if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
