@@ -146,7 +146,7 @@ app.put('/campgrounds/:id', validateCampground, catchAsync(async (req, res, next
         res.redirect(`/campgrounds/${campground._id}`)
     })
 }));
-//delete
+//delete - Campground
 app.delete('/campgrounds/:id', catchAsync(async (req, res,next) => {
     console.log("delete");
     const {id} = req.params;
@@ -156,6 +156,20 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res,next) => {
         if(!campground) throw new ExpressError("Page not Found", 404);
         else
         res.redirect(`/campgrounds`)
+    })   
+}));
+//Delete - Review
+app.delete('/campgrounds/:campId/reviews/:reviewId', catchAsync(async (req, res,next) => {
+    console.log("delete review");
+    const {campId, reviewId} = req.params;
+    console.log(campId, reviewId);
+    //$pull is an operator in mongo, it removes any matches
+    await Campground.findByIdAndUpdate(campId, {$pull: { reviews: reviewId}})
+    const review = await Review.findByIdAndDelete(reviewId).exec()
+    .then((review)=>{
+        if(!review) throw new ExpressError("Page not Found", 404);
+        else
+         res.redirect(`/campgrounds/${campId}`)
     })   
 }))
 
