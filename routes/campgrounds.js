@@ -61,10 +61,11 @@ router.get('/:id/edit', catchAsync(async (req, res, next) => {
 router.post('/', validateCampground, catchAsync(async (req, res, next) => {
     // if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
     
-
+    
      await Campground.insertMany(req.body.campground)
     .then((camp)=>{
         console.log(camp);
+        req.flash('success', 'Successfully made a new campground');
         res.redirect(`/campgrounds/${camp[0]._id}`)
     })
 }));
