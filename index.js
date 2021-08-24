@@ -9,6 +9,8 @@ const {campgroundSchema, reviewSchema} = require('./schemas/schemas')
 const methodOverride = require('method-override');
 const ExpressError = require('./utils/expressError');
 const catchAsync = require('./utils/catchAsync')
+const session = require('express-session'); 
+
 //create model using campground schema
 const Campground = require('./models/campground');
 const Review = require('./models/review');
@@ -20,13 +22,17 @@ app.engine('ejs', ejsMate); //ejs-mate setup
 //set views directory
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
 //set up parsing for data types
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+
 //app.use(express.json()) // for parsing application/json
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
+
 //set up method override so we can use PATCH, PUT, DELETE routes
 app.use(methodOverride('_method'));
+
 //set up directory for scripts and the like
 app.use(express.static(path.join(__dirname, 'public')))
 
@@ -49,9 +55,19 @@ mongoose.connect('mongodb://localhost:27017/yelp-camp', {
 //listener fuction to catch errors on connection
 mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 
-
-
-
+//Session configuration
+const sessionConfig = {
+    secret: 'secretword',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7, //calculation is for ms in a week
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        httpOnly: true
+    }
+}
+//session setup
+app.use(session(sessionConfig))
 
 app.listen(3000, () =>{
     console.log('Listening on Port 3000') 
