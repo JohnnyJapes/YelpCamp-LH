@@ -9,9 +9,15 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
     <%- include('../partials/navbar') %> 
-    <main class="container-fluid flex-shrink-0" style="margin-top: 3rem;">
+  
+    <%- include('../partials/flashSuccess') %>
+  
+   
+    <main class="container-fluid flex-shrink-0 mt-3" >
+         
         <%- body -%>
     </main>
+    
     <%- include('../partials/footer') %> 
 </body>
 <script src="/js/bootstrap.min.js"></script>
