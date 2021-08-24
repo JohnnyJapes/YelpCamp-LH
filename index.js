@@ -10,6 +10,7 @@ const methodOverride = require('method-override');
 const ExpressError = require('./utils/expressError');
 const catchAsync = require('./utils/catchAsync')
 const session = require('express-session'); 
+const flash = require('connect-flash')
 
 //create model using campground schema
 const Campground = require('./models/campground');
@@ -67,22 +68,29 @@ const sessionConfig = {
     }
 }
 //session setup
-app.use(session(sessionConfig))
+app.use(session(sessionConfig));
+
+app.use(flash());
+//local variable for flash success middleware
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
 
 app.listen(3000, () =>{
     console.log('Listening on Port 3000') 
 });
 //route for reviews
 app.use('/campgrounds/:id/reviews', reviewRoutes)
+
 //route for campgrounds
 app.use('/campgrounds', campgroundRoutes)
-
 
 //homepage route
 app.get('/', (req, res) => {
     res.render('home');
 });
-
 
 //route to throw error and trigger error page
 app.get('/debugError',(req, res, next) => {
