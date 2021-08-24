@@ -28,7 +28,7 @@ app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 //set up method override so we can use PATCH, PUT, DELETE routes
 app.use(methodOverride('_method'));
 //set up directory for scripts and the like
-app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, 'public')))
 
 //connect mongoose, basic error handling, useCreateIndex:true to avoid deprecation warnings from MongoDB
 //local host and single DB for now
