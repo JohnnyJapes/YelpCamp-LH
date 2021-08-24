@@ -12,6 +12,9 @@ const catchAsync = require('./utils/catchAsync')
 //create model using campground schema
 const Campground = require('./models/campground');
 const Review = require('./models/review');
+//router files
+const campgroundRoutes = require ('./routes/campgrounds');
+const reviewRoutes = require ('./routes/reviews')
 
 app.engine('ejs', ejsMate); //ejs-mate setup
 //set views directory
@@ -42,137 +45,24 @@ mongoose.connect('mongodb://localhost:27017/yelp-camp', {
 
 //listener fuction to catch errors on connection
 mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
-//function to validate campground data using Joi
-function validateCampground(req, res, next){
-    const {error} = campgroundSchema.validate(req.body);
-    if(error){ 
-        const msg = error.details.map(er => er.message).join (',');
-        throw new ExpressError(msg, 400);
-    }
-    else next();
-};
-//Function to validate review data using Joi
-function validateReview(req, res, next){
-    const {error} = reviewSchema.validate(req.body);
-    if(error){ 
-        const msg = error.details.map(er => er.message).join (',');
-        throw new ExpressError(msg, 400);
-    }
-    else next();
-};
+
+
 
 
 
 app.listen(3000, () =>{
     console.log('Listening on Port 3000') 
 });
+//route for reviews
+app.use('/campgrounds/:id/reviews', reviewRoutes)
+//route for campgrounds
+app.use('/campgrounds', campgroundRoutes)
+
+
 //homepage route
 app.get('/', (req, res) => {
     res.render('home');
 });
-//New route
-app.get('/campgrounds/new',(req, res) => {
-    res.render("campgrounds/new");
-});
-//index route
-app.get('/campgrounds', catchAsync(async (req, res, next) => {
-    const campgrounds = await Campground.find({}).exec()
-    .then((campgrounds)=> {
-        res.render('campgrounds/index', {campgrounds});
-    })
-}));
-
-//Show/Details route
-app.get('/campgrounds/:id', catchAsync(async (req, res, next) => {
-    console.log("Show Route");
-    // try{
-    const {id} = req.params;
-    console.log(id);
-    
-    const campground = await Campground.findById(id).populate('reviews')
-    .then(function(campground){
-        if(!campground) throw new ExpressError("Page not Found", 404);
-        else
-        res.render('campgrounds/show', {campground});
-    })
-})
-);
-//edit route
-app.get('/campgrounds/:id/edit', catchAsync(async (req, res, next) => {
-    const {id} = req.params;
-    const campground = await Campground.findById(id).exec()
-    .then(function(campground){
-        if(!campground) throw new ExpressError("Page not Found", 404);
-        else
-        res.render('campgrounds/edit', {campground});
-    })
-}));
-
-//create route - Campground
-app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) => {
-    // if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
-    
-
-     await Campground.insertMany(req.body.campground)
-    .then((camp)=>{
-        console.log(camp);
-        res.redirect(`/campgrounds/${camp[0]._id}`)
-    })
-}));
-//create route - REVIEW
-app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async (req, res, next) => {
-    const {id} = req.params;
-    const campground = await Campground.findById(id);
-    const review = await new Review(req.body.review)
-    campground.reviews.push(review);
-    await review.save();
-    await campground.save()
-    .then((rev)=>{
-        console.log(rev);
-        res.redirect(`/campgrounds/${id}`)
-    })
-}));
-//Update route
-app.put('/campgrounds/:id', validateCampground, catchAsync(async (req, res, next) => {
-    //if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
-    const {id} = req.params;
-    //const {title, price, description, city, state, image} = req.body.campground;
-    //const location = city+", "+state;
-    //const location = {city, state};
-    const campground = await Campground.findByIdAndUpdate(id, req.body.campground, {new: true, runValidators: true} ).exec()
-    .then((campground)=>{
-        if(!campground) throw new ExpressError("Invalid Campground Data", 400);
-        else
-        res.redirect(`/campgrounds/${campground._id}`)
-    })
-}));
-//delete - Campground
-app.delete('/campgrounds/:id', catchAsync(async (req, res,next) => {
-    console.log("delete");
-    const {id} = req.params;
-    console.log(id);
-    const campground = await Campground.findByIdAndDelete(id).exec()
-    .then((campground)=>{
-        if(!campground) throw new ExpressError("Page not Found", 404);
-        else
-        res.redirect(`/campgrounds`)
-    })   
-}));
-//Delete - Review
-app.delete('/campgrounds/:campId/reviews/:reviewId', catchAsync(async (req, res,next) => {
-    console.log("delete review");
-    const {campId, reviewId} = req.params;
-    console.log(campId, reviewId);
-    //$pull is an operator in mongo, it removes any matches
-    await Campground.findByIdAndUpdate(campId, {$pull: { reviews: reviewId}})
-    const review = await Review.findByIdAndDelete(reviewId).exec()
-    .then((review)=>{
-        if(!review) throw new ExpressError("Page not Found", 404);
-        else
-         res.redirect(`/campgrounds/${campId}`)
-    })   
-}))
-
 
 
 //route to throw error and trigger error page
