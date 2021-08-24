@@ -65,7 +65,8 @@ router.post('/', validateCampground, catchAsync(async (req, res, next) => {
      await Campground.insertMany(req.body.campground)
     .then((camp)=>{
         console.log(camp);
-        req.flash('success', 'Successfully made a new campground');
+        
+        req.flash('success', 'Successfully made a new campground'); //appends messages to top of redirect page
         res.redirect(`/campgrounds/${camp[0]._id}`)
     })
 }));
@@ -79,8 +80,11 @@ router.put('/:id', validateCampground, catchAsync(async (req, res, next) => {
     const campground = await Campground.findByIdAndUpdate(id, req.body.campground, {new: true, runValidators: true} ).exec()
     .then((campground)=>{
         if(!campground) throw new ExpressError("Invalid Campground Data", 400);
-        else
-        res.redirect(`/campgrounds/${campground._id}`)
+        else{
+            //appends messages to top of redirect page
+            req.flash('success', 'Successfully updated campground');
+            res.redirect(`/campgrounds/${campground._id}`)
+        }
     })
 }));
 //delete - Campground
@@ -91,8 +95,11 @@ router.delete('/:id', catchAsync(async (req, res,next) => {
     const campground = await Campground.findByIdAndDelete(id).exec()
     .then((campground)=>{
         if(!campground) throw new ExpressError("Page not Found", 404);
-        else
-        res.redirect(`/campgrounds`)
+        else{
+            //appends messages to top of redirect page
+            req.flash('success', 'Successfully deleted campground');
+            res.redirect(`/campgrounds`)
+        }
     })   
 }));
 

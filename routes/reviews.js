@@ -31,6 +31,8 @@ router.post('/', validateReview, catchAsync(async (req, res, next) => {
     await campground.save()
     .then((rev)=>{
         console.log(rev);
+        //appends messages to top of redirect page
+        req.flash('success', 'Successfully made a new review');
         res.redirect(`/campgrounds/${id}`)
     })
 }));
@@ -45,9 +47,11 @@ router.delete('/:reviewId', catchAsync(async (req, res,next) => {
     const review = await Review.findByIdAndDelete(reviewId).exec()
     .then((review)=>{
         if(!review) throw new ExpressError("Page not Found", 404);
-        else
-        req.flash('success', 'Successfully deleted review');
-         res.redirect(`/campgrounds/${id}`)
+        else{
+            //appends messages to top of redirect page
+            req.flash('success', 'Successfully deleted review');
+            res.redirect(`/campgrounds/${id}`)
+        }
     })   
 }))
 
