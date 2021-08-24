@@ -35,7 +35,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true, 
     useUnifiedTopology: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useFindAndModify: false
 })
     .then(function(){
         console.log("Mongo Connection open")
