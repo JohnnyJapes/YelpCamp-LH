@@ -46,6 +46,7 @@ router.delete('/:reviewId', catchAsync(async (req, res,next) => {
     .then((review)=>{
         if(!review) throw new ExpressError("Page not Found", 404);
         else
+        req.flash('success', 'Successfully deleted review');
          res.redirect(`/campgrounds/${id}`)
     })   
 }))
