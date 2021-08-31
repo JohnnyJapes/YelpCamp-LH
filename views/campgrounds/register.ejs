@@ -1,0 +1,32 @@
+<% layout('./layouts/boilerplate') -%>
+<% block('head').append(`<title>New User Registration</title>`) %>
+<h1 class="text-center">New User</h1>
+<div class="container w-50">
+    <form action="/campgrounds/register" method="post" class="needs-validation" novalidate>
+            
+        <div class="row mb-3 justify-content-center">
+            
+            <div class="col-lg-6">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" required class="form-control" id="title" aria-describedby="userHelp" name="username">
+                <div class="valid-feedback">All good!</div>
+                <div id="userHelp" class="invalid-feedback">Please enter a suitable username.</div>
+            </div> 
+            <div class="col-lg-6">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" name="password" id="password" required class="form-control" aria-describedby="pwHelp">
+                <div class="valid-feedback">All good!</div>
+                <div id="pwHelp" class="invalid-feedback">Please enter suitable password.</div>
+            </div>
+            
+            
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col-lg-3">
+                <button class="btn btn-success" type="submit">Register</button>
+            </div>
+        </div> 
+    </form>
+
+</div>
