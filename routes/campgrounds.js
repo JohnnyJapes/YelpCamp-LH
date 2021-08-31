@@ -6,6 +6,7 @@ const Joi = require('joi');
 const {campgroundSchema} = require('../schemas/schemas')
 //create model using campground schema
 const Campground = require('../models/campground');
+const User = require('../models/user');
 
 
 //function to validate campground data using Joi
@@ -30,6 +31,27 @@ router.get('/', catchAsync(async (req, res, next) => {
         res.render('campgrounds/index', {campgrounds});
     })
 }));
+
+//user registration
+router.get('/register', catchAsync(async function(req, res, next){
+    res.render('campgrounds/register')
+}))
+
+router.post('/register', catchAsync(async function(req, res, next){
+    const {username, password} = req.body;
+    tempUser = new User({username, email:"blank"})
+    User.register(tempUser, password, function(err) {
+        if (err) {
+          console.log('error while user register!', err);
+          req.flash('failure', 'failed to register');
+          return next(err);
+        }
+        req.flash('success', 'Successfully registered');
+        console.log('user registered!');
+    
+        res.redirect('/campgrounds');
+      })
+}))
 
 //Show/Details route
 router.get('/:id', catchAsync(async (req, res, next) => {
