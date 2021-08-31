@@ -20,6 +20,7 @@ const Review = require('./models/review');
 //router files
 const campgroundRoutes = require ('./routes/campgrounds');
 const reviewRoutes = require ('./routes/reviews')
+const userRoutes = require('./routes/users')
 // requires the model with Passport-Local Mongoose plugged in
 const User = require('./models/user');
 
@@ -97,16 +98,19 @@ passport.deserializeUser(User.deserializeUser());
 app.listen(3000, () =>{
     console.log('Listening on Port 3000') 
 });
-//route for reviews
-app.use('/campgrounds/:id/reviews', reviewRoutes)
 
-//route for campgrounds
-app.use('/campgrounds', campgroundRoutes)
 
 //homepage route
 app.get('/', (req, res) => {
     res.render('home');
 });
+//user route
+app.use('/', userRoutes)
+//route for reviews
+app.use('/campgrounds/:id/reviews', reviewRoutes)
+//route for campgrounds
+app.use('/campgrounds', campgroundRoutes)
+
 
 //route to throw error and trigger error page
 app.get('/debugError',(req, res, next) => {
