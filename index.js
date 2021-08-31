@@ -11,31 +11,22 @@ const ExpressError = require('./utils/expressError');
 const catchAsync = require('./utils/catchAsync')
 const session = require('express-session'); 
 const flash = require('connect-flash')
-
+//passport
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy;
 //create model using campground schema
 const Campground = require('./models/campground');
 const Review = require('./models/review');
 //router files
 const campgroundRoutes = require ('./routes/campgrounds');
 const reviewRoutes = require ('./routes/reviews')
+// requires the model with Passport-Local Mongoose plugged in
+const User = require('./models/user');
 
 app.engine('ejs', ejsMate); //ejs-mate setup
 //set views directory
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
-//set up parsing for data types
-app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
-
-//app.use(express.json()) // for parsing application/json
-app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
-app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
-
-//set up method override so we can use PATCH, PUT, DELETE routes
-app.use(methodOverride('_method'));
-
-//set up directory for scripts and the like
-app.use(express.static(path.join(__dirname, 'public')))
 
 //connect mongoose, basic error handling, useCreateIndex:true to avoid deprecation warnings from MongoDB
 //local host and single DB for now
@@ -67,6 +58,7 @@ const sessionConfig = {
         httpOnly: true
     }
 }
+
 //session setup
 app.use(session(sessionConfig));
 
@@ -77,6 +69,30 @@ app.use((req, res, next) => {
     res.locals.error = req.flash('error');
     next();
 })
+//set up parsing for data types
+app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+
+//app.use(express.json()) // for parsing application/json
+app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
+app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
+
+//set up method override so we can use PATCH, PUT, DELETE routes
+app.use(methodOverride('_method'));
+
+//set up directory for scripts and the like
+app.use(express.static(path.join(__dirname, 'public')))
+
+// Configure passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// CHANGE: USE "createStrategy" INSTEAD OF "authenticate"
+passport.use(User.createStrategy());
+
+// use static serialize and deserialize of model for passport session support
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 
 app.listen(3000, () =>{
     console.log('Listening on Port 3000') 
