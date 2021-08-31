@@ -3,7 +3,7 @@ const router = express.Router();
 const ExpressError = require('../utils/expressError');
 const catchAsync = require('../utils/catchAsync')
 const Joi = require('joi');
-const {campgroundSchema} = require('../schemas/schemas')
+const {campgroundSchema, userSchema} = require('../schemas/schemas')
 //create model using campground schema
 const Campground = require('../models/campground');
 const User = require('../models/user');
@@ -18,7 +18,15 @@ function validateCampground(req, res, next){
     }
     else next();
 };
+function validateUserInfo(req, res, next){
+    const {error} = userSchema.validate(req.body);
+    if(error){
+        const msg = error.details.map(er => er.message).join (',');
+        throw new ExpressError(msg, 400);
 
+    }
+    else next();
+}
 
 
 router.get('/new',(req, res) => {
@@ -37,7 +45,7 @@ router.get('/register', catchAsync(async function(req, res, next){
     res.render('campgrounds/register')
 }))
 
-router.post('/register', catchAsync(async function(req, res, next){
+router.post('/register', validateUserInfo, catchAsync(async function(req, res, next){
     const {username, password, email} = req.body;
     tempUser = new User({username, email})
     User.register(tempUser, password, function(err) {
