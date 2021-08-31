@@ -38,8 +38,8 @@ router.get('/register', catchAsync(async function(req, res, next){
 }))
 
 router.post('/register', catchAsync(async function(req, res, next){
-    const {username, password} = req.body;
-    tempUser = new User({username, email:"blank"})
+    const {username, password, email} = req.body;
+    tempUser = new User({username, email})
     User.register(tempUser, password, function(err) {
         if (err) {
           console.log('error while user register!', err);
