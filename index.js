@@ -64,19 +64,7 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 
 app.use(flash());
-//local variable for flash success middleware, exposes these variables to ejs
-app.use((req, res, next) => {
-    if (!['/login', '/register', '/'].includes(req.originalUrl)) {
-        console.log(req.originalUrl);
-        req.session.returnTo = req.originalUrl;
-    }
-    //console.log(req.session);
-    console.log(req.user)
-    res.locals.currentUser = req.user;
-    res.locals.success = req.flash('success');
-    res.locals.error = req.flash('error');
-    next();
-})
+
 //set up parsing for data types
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
@@ -101,7 +89,19 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-
+//local variable for flash success middleware, exposes these variables to ejs
+app.use((req, res, next) => {
+    if (!['/login', '/register', '/'].includes(req.originalUrl)) {
+        console.log(req.originalUrl);
+        req.session.returnTo = req.originalUrl;
+    }
+    //console.log(req.session);
+    console.log(req.user)
+    res.locals.currentUser = req.user;
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
 app.listen(3000, () =>{
     console.log('Listening on Port 3000') 
 });
