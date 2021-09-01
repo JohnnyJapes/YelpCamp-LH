@@ -20,8 +20,8 @@ function validateCampground(req, res, next){
     else next();
 };
 
-
-router.get('/new',(req, res) => {
+//new campground page
+router.get('/new',isLoggedIn, (req, res) => {
     res.render("campgrounds/new");
 });
 //index route
