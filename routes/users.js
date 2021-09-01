@@ -35,14 +35,17 @@ router.post('/register', validateUserInfo, catchAsync(async function(req, res, n
     tempUser = new User({username, email})
     await User.register(tempUser, password, function(err) {
         if (err) {
-          console.log('error while user register!', err);
-          req.flash('error', 'failed to register');
-          return next(err);
+          console.log('error during registration!', err);
+          req.flash('error', err.message);
+          res.redirect('/register')
+          //return next(err);
         }
+        else{
         req.flash('success', 'Successfully registered');
         console.log('user registered!');
     
         res.redirect('/campgrounds');
+        }
       })
 }))
 //log in page
@@ -81,5 +84,19 @@ router.post('/login', catchAsync(async function(req, res, next){
     await userLogin.authenticate(password)
         .then()
 }))
+
+router.get('/logout', function(req, res, next){
+    req.logout();
+    const editRe = new RegExp('\/campgrounds\/.*\/edit')
+    const filterRe = /\/campgrounds\/.*(?=\/)/
+    if (editRe.test(req.session.returnTo)){
+        var returnTo = req.session.returnTo;
+        var found = returnTo.match(filterRe);
+        var destination = found[0];
+    }
+    else if (req.session.returnTo !== '/campgrounds/new') var destination = req.session.returnTo;
+    else { var destination = '/campgrounds'}
+    res.redirect(destination);
+})
 
 module.exports = router;
