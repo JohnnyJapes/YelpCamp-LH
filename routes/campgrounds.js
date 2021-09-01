@@ -4,6 +4,7 @@ const ExpressError = require('../utils/expressError');
 const catchAsync = require('../utils/catchAsync')
 const Joi = require('joi');
 const {campgroundSchema, userSchema} = require('../schemas/schemas')
+const {isLoggedIn} = require('../middleware')
 //create model using campground schema
 const Campground = require('../models/campground');
 const User = require('../models/user');
@@ -48,7 +49,7 @@ router.get('/:id', catchAsync(async (req, res, next) => {
 })
 );
 //edit route
-router.get('/:id/edit', catchAsync(async (req, res, next) => {
+router.get('/:id/edit',isLoggedIn, catchAsync(async (req, res, next) => {
     const {id} = req.params;
     const campground = await Campground.findById(id).exec()
     .then(function(campground){
