@@ -60,7 +60,7 @@ router.get('/:id/edit',isLoggedIn, catchAsync(async (req, res, next) => {
 }));
 
 //create route - Campground
-router.post('/', validateCampground, catchAsync(async (req, res, next) => {
+router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res, next) => {
     // if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
     
     
@@ -73,7 +73,7 @@ router.post('/', validateCampground, catchAsync(async (req, res, next) => {
     })
 }));
 //Update route
-router.put('/:id', validateCampground, catchAsync(async (req, res, next) => {
+router.put('/:id', isLoggedIn, validateCampground, catchAsync(async (req, res, next) => {
     //if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
     const {id} = req.params;
     //const {title, price, description, city, state, image} = req.body.campground;
@@ -90,7 +90,7 @@ router.put('/:id', validateCampground, catchAsync(async (req, res, next) => {
     })
 }));
 //delete - Campground
-router.delete('/:id', catchAsync(async (req, res,next) => {
+router.delete('/:id', isLoggedIn, catchAsync(async (req, res,next) => {
     console.log("delete");
     const {id} = req.params;
     console.log(id);
