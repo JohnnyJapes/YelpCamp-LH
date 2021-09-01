@@ -5,12 +5,23 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
+            <div class="navbar-nav me-auto">
               <a class="nav-link" href="/campgrounds">Campgrounds</a>
               <a class="nav-link" href="/campgrounds/new">Add Campground</a>
-              <a class="nav-link" href="/register">Register New Account</a>
-              <a class="nav-link" href="/login">Log in</a>
+              
+             
 
+
+            </div>
+            <div class="d-flex navbar-nav">
+              <% if (currentUser) { %>
+                <a class="nav-link" href="/logout">Log Out</a>
+
+              <% } else{ %>
+
+                <a class="nav-link" href="/register">Register</a>
+                <a class="nav-link" href="/login">Log in</a>
+              <% } %> 
 
             </div>
           </div>
