@@ -23,6 +23,10 @@ function validateUserInfo(req, res, next){
 
 //user registration
 router.get('/register', catchAsync(async function(req, res, next){
+   //Check if user is already logged in
+    if (req.isAuthenticated()) {
+        return res.redirect('/campgrounds');
+    }
     res.render('users/register')
 }))
 //User creation
@@ -43,6 +47,10 @@ router.post('/register', validateUserInfo, catchAsync(async function(req, res, n
 }))
 //log in page
 router.get('/login', (req, res) => {
+    //Check if user is already logged in
+    if (req.isAuthenticated()) {
+        return res.redirect('/campgrounds');
+    }
     res.render('users/login')           
 })
 //User login 
