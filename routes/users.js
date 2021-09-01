@@ -32,7 +32,7 @@ router.post('/register', validateUserInfo, catchAsync(async function(req, res, n
     await User.register(tempUser, password, function(err) {
         if (err) {
           console.log('error while user register!', err);
-          req.flash('failure', 'failed to register');
+          req.flash('error', 'failed to register');
           return next(err);
         }
         req.flash('success', 'Successfully registered');
@@ -54,7 +54,14 @@ router.post('/login', passport.authenticate('local',
     }), 
     function(req, res, next){
         req.flash('success', 'Successfully Logged in')
-        res.redirect('/campgrounds')
+        if (req.session.returnTo){
+            var destination = req.session.returnTo;
+            delete req.session.returnTo;
+        }
+        else{
+            var destination = '/campgrounds'
+        }
+        res.redirect(destination)
         
         
 
