@@ -66,7 +66,7 @@ router.get('/:id/edit',isLoggedIn, catchAsync(async (req, res, next) => {
 router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res, next) => {
     // if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
     
-    
+    req.body.campground.author = req.user._id;
      await Campground.insertMany(req.body.campground)
     .then((camp)=>{
         console.log(camp);
