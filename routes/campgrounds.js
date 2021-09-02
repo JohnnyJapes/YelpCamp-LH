@@ -40,11 +40,14 @@ router.get('/:id', catchAsync(async (req, res, next) => {
     const {id} = req.params;
     console.log(id);
     
-    const campground = await Campground.findById(id).populate('reviews')
+    const campground = await Campground.findById(id).populate('reviews').populate('author')
     .then(function(campground){
         if(!campground) throw new ExpressError("Page not Found", 404);
-        else
-        res.render('campgrounds/show', {campground});
+        else{
+            console.log(campground)
+            res.render('campgrounds/show', {campground});
+        }
+        
     })
 })
 );
