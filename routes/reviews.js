@@ -9,13 +9,14 @@ const Review = require('../models/review');
 
 
 //create route - REVIEW
-router.post('/', validateReview, catchAsync(async (req, res, next) => {
+router.post('/',isLoggedIn, validateReview, catchAsync(async (req, res, next) => {
     const {id} = req.params;
     console.log(id);
     const campground = await Campground.findById(id);
     console.log(campground);
     const review = await new Review(req.body.review)
-    campground.reviews.push(review);
+    review.author = req.user._id; //assign current user as review author
+    campground.reviews.push(review); //push review to campgrounds array of reviews
     await review.save();
     await campground.save()
     .then((rev)=>{
@@ -27,7 +28,7 @@ router.post('/', validateReview, catchAsync(async (req, res, next) => {
 }));
 
 //Delete - Review
-router.delete('/:reviewId', catchAsync(async (req, res,next) => {
+router.delete('/:reviewId', isLoggedIn, isAuthor, catchAsync(async (req, res,next) => {
     console.log("delete review");
     const {id, reviewId} = req.params;
     console.log(id, reviewId);
