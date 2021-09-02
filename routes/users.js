@@ -82,7 +82,7 @@ router.post('/login', catchAsync(async function(req, res, next){
         .then()
 }))
 
-router.get('/logout', function(req, res, next){
+router.get('/logout', isLoggedIn, function(req, res, next){
     req.logout();
     const editRe = new RegExp('\/campgrounds\/.*\/edit')
     const filterRe = /\/campgrounds\/.*(?=\/)/
