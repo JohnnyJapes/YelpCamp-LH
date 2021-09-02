@@ -26,11 +26,16 @@ router.get('/:id', catchAsync(async (req, res, next) => {
     const {id} = req.params;
     console.log(id);
     
-    const campground = await Campground.findById(id).populate('reviews').populate('author')
+    const campground = await Campground.findById(id).populate({
+        path: 'reviews',
+        populate: {
+            path: 'author'
+        }
+    }).populate('author')
     .then(function(campground){
         if(!campground) throw new ExpressError("Page not Found", 404);
         else{
-            console.log(campground)
+           // console.log(campground)
             res.render('campgrounds/show', {campground});
         }
         
