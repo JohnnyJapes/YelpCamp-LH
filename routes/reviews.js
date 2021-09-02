@@ -2,21 +2,10 @@ const express = require('express');
 const router = express.Router({mergeParams: true});
 const ExpressError = require('../utils/expressError');
 const catchAsync = require('../utils/catchAsync')
-const Joi = require('joi');
-const {reviewSchema} = require('../schemas/schemas')
+const {isLoggedIn, isAuthor, validateReview} = require('../middleware');
 //create model using schema
 const Campground = require('../models/campground');
 const Review = require('../models/review');
-
-//Function to validate review data using Joi
-function validateReview(req, res, next){
-    const {error} = reviewSchema.validate(req.body);
-    if(error){ 
-        const msg = error.details.map(er => er.message).join (',');
-        throw new ExpressError(msg, 400);
-    }
-    else next();
-};
 
 
 //create route - REVIEW

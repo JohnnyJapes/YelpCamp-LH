@@ -2,23 +2,9 @@ const express = require('express');
 const router = express.Router();
 const ExpressError = require('../utils/expressError');
 const catchAsync = require('../utils/catchAsync')
-const Joi = require('joi');
-const {campgroundSchema, userSchema} = require('../schemas/schemas')
-const {isLoggedIn, isAuthor} = require('../middleware')
+const {isLoggedIn, isAuthor, validateCampground} = require('../middleware')
 //create model using campground schema
 const Campground = require('../models/campground');
-const User = require('../models/user');
-
-
-//function to validate campground data using Joi
-function validateCampground(req, res, next){
-    const {error} = campgroundSchema.validate(req.body);
-    if(error){ 
-        const msg = error.details.map(er => er.message).join (',');
-        throw new ExpressError(msg, 400);
-    }
-    else next();
-};
 
 //new campground page
 router.get('/new',isLoggedIn, (req, res) => {

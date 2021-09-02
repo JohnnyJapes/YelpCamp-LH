@@ -2,24 +2,10 @@ const express = require('express');
 const router = express.Router();
 const ExpressError = require('../utils/expressError');
 const catchAsync = require('../utils/catchAsync')
-const Joi = require('joi');
-const {userSchema} = require('../schemas/schemas')
 const passport = require('passport');
-//create model using campground schema
-const Campground = require('../models/campground');
+const {isLoggedIn, isAuthor, validateUserInfo} = require('../middleware');
+//create model using user schema
 const User = require('../models/user');
-
-
-//function to validate user data using Joi
-function validateUserInfo(req, res, next){
-    const {error} = userSchema.validate(req.body);
-    if(error){
-        const msg = error.details.map(er => er.message).join (',');
-        throw new ExpressError(msg, 400);
-
-    }
-    else next();
-}
 
 //user registration
 router.get('/register', catchAsync(async function(req, res, next){
