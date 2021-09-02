@@ -32,21 +32,32 @@ router.get('/register', catchAsync(async function(req, res, next){
 //User creation
 router.post('/register', validateUserInfo, catchAsync(async function(req, res, next){
     const {username, password, email} = req.body;
-    tempUser = new User({username, email})
-    await User.register(tempUser, password, function(err) {
-        if (err) {
-          console.log('error during registration!', err);
-          req.flash('error', err.message);
-          res.redirect('/register')
-          //return next(err);
-        }
-        else{
-        req.flash('success', 'Successfully registered');
+    const tempUser = new User({username, email})
+    try{
+       const registeredUser = await User.register(tempUser, password) 
+       req.flash('success', 'Successfully registered');
         console.log('user registered!');
+        if (registeredUser){
+            console.log(registeredUser);
+        req.login(registeredUser, (err) => {
+            if (err) return next();
+            else res.redirect('/campgrounds');
+         });
+         }
+    }
+    catch(err){
+            
+              console.log('error during registration!', err);
+              req.flash('error', err.message);
+              res.redirect('/register')
+              //return next(err);
+            
+          
+    }
     
-        res.redirect('/campgrounds');
-        }
-      })
+      
+      
+    
 }))
 //log in page
 router.get('/login', (req, res) => {
