@@ -42,7 +42,8 @@ const seedDB = async () => {
             location: {city:cities[random1000].city, state:cities[random1000].state}, 
             image: "https://source.unsplash.com/collection/483251",
             description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloribus, ullam? Sapiente temporibus ea debitis enim autem blanditiis at, beatae neque rem distinctio harum adipisci placeat facere repellendus mollitia eos. Nobis?",
-            price: random100});
+            price: random100,
+            author: '6130df03b058201c0f6f4386'});
         await temp.save();    
     }
 };
