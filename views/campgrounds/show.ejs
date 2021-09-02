@@ -14,19 +14,22 @@
               <li class="list-group-item">Location: <%= campground.location.city + ", "+ campground.location.state %></li>
               <li class="list-group-item">Price: $<%= campground.price.toFixed(2) %>/night</li>
             </ul>
-            <div class="card-body ">
-                <div class="row justify-content-center">
-                    <div class="col d-flex justify-content-center">
-                        <a class="btn btn-primary" role="button"href="/campgrounds/<%= campground._id %>/edit">Edit Campground</a>
+            <% if (currentUser && (currentUser.username === campground.author.username)) { %>
+                <div class="card-body ">
+                    <div class="row justify-content-center">
+                        <div class="col d-flex justify-content-center">
+                            <a class="btn btn-primary" role="button"href="/campgrounds/<%= campground._id %>/edit">Edit Campground</a>
+                        </div>
+                        <div class="col d-flex justify-content-center">
+                            <form action ="/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
+                                <button class="btn btn-danger" type="submit"> Delete Campground</button></form>
+                        </div>
                     </div>
-                    <div class="col d-flex justify-content-center">
-                        <form action ="/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
-                            <button class="btn btn-danger" type="submit"> Delete Campground</button></form>
-                    </div>
+                   
+                    
                 </div>
-               
-                
-            </div>
+            <% } %>
+            
         </div>
     </div>
 
