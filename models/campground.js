@@ -30,12 +30,12 @@ const campgroundSchema = new Schema({
             ref: 'Review'
         }
     ],
-    author: [
+    author: 
         {
             type: Schema.Types.ObjectId,
             ref: 'User'
         }
-    ]
+    
     
 
 });
