@@ -4,22 +4,23 @@ const passport = require('passport');
 const {isLoggedIn, validateUserInfo} = require('../middleware');
 const users = require('../controllers/users')
 
-//user registration page
-router.get('/register', users.renderRegister)
 
-//User creation
-router.post('/register', validateUserInfo, users.createUser)
+router.route('/register')
+    //user registration page
+    .get(users.renderRegister)
+    //User creation
+    .post(validateUserInfo, users.createUser);
 
-//log in page
-router.get('/login', users.renderLogin);
+router.route('/login')
+    //log in page
+    .get(users.renderLogin)
+    //User login route
+    .post(passport.authenticate('local',
+        { failureRedirect: '/login',
+            failureFlash: true,
+            //successRedirect: '/campgrounds',
 
-//User login route
-router.post('/login', passport.authenticate('local',
-     { failureRedirect: '/login',
-        failureFlash: true,
-        //successRedirect: '/campgrounds',
-
-    }), users.login)
+        }), users.login)
 
 //user logout route
 router.get('/logout', isLoggedIn, users.logout)
