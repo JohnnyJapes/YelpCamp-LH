@@ -46,7 +46,7 @@ module.exports.renderEdit = catchAsync(async (req, res, next) => {
         res.render('campgrounds/edit', {campground});
     })
 });
-//create route - Campground, creates new campground document and inserts it into the database
+//create method - Campground, creates new campground document and inserts it into the database
 module.exports.createNew = catchAsync(async (req, res, next) => {
     // if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
     
@@ -59,7 +59,7 @@ module.exports.createNew = catchAsync(async (req, res, next) => {
         res.redirect(`/campgrounds/${camp[0]._id}`)
     })
 });
-//update route, updates existing campground document based on id
+//update method, updates existing campground document based on id
 module.exports.update = catchAsync(async (req, res, next) => {
     const {id} = req.params;
     const campground = await Campground.findByIdAndUpdate(id, req.body.campground, {new: true, runValidators: true} ).exec()
@@ -72,7 +72,7 @@ module.exports.update = catchAsync(async (req, res, next) => {
         }
     })
 });
-//delete route, deletes existing campground document based off id
+//delete method, deletes existing campground document based off id
 module.exports.delete = catchAsync(async (req, res,next) => {
     console.log("delete");
     const {id} = req.params;
