@@ -51,6 +51,7 @@ module.exports.createNew = catchAsync(async (req, res, next) => {
     // if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
     
     req.body.campground.author = req.user._id;
+    req.body.campground.image = req.file.path;
      await Campground.insertMany(req.body.campground)
     .then((camp)=>{
         console.log(camp);

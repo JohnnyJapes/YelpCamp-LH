@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const campgrounds = require('../controllers/campgrounds')
 const {isLoggedIn, isAuthor, validateCampground} = require('../middleware')
+const multer = require('multer')
+const {storage} = require('../cloudinary/index')
+const upload = multer({storage})
 
 //new campground page
 router.get('/new',isLoggedIn, campgrounds.renderNew);
@@ -10,7 +13,7 @@ router.route('/')
     //index route
     .get( campgrounds.renderIndex)
     //create new campground route
-    .post(isLoggedIn, validateCampground, campgrounds.createNew);
+    .post(isLoggedIn, upload.single('image'), validateCampground,  campgrounds.createNew);
 
 //campground details routes
 router.route('/:id')

@@ -9,9 +9,12 @@ module.exports.campgroundSchema = Joi.object({
             city: Joi.string().required(),
             state: Joi.string().required()
         }).required(),
-        image: Joi.string().required(),
+        // image: Joi.string().required(),
         description: Joi.string().required()
-    }).required()
+    }).required(),
+    file: Joi.object({
+        path: Joi.string()
+    })
 });
 
 module.exports.reviewSchema = Joi.object({
