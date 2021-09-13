@@ -40,10 +40,11 @@ const seedDB = async () => {
             title:`${descriptors[Math.floor(Math.random()*descriptors.length)]} ${
                 places[Math.floor(Math.random()*places.length)]}`,
             location: {city:cities[random1000].city, state:cities[random1000].state}, 
-            image: "https://source.unsplash.com/collection/483251",
+            image: [{url:"https://res.cloudinary.com/dxmydkp0v/image/upload/v1631562810/YelpCamp/ioegbjwcjvs1vdqz91eh.png", filename:"ioegbjwcjvs1vdqz91eh.png"}, 
+                    {url: "https://res.cloudinary.com/dxmydkp0v/image/upload/v1631294769/YelpCamp/bzlbo6t96d7je4evom4k.jpg", filename:"je4evom4k.jpg"}],
             description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloribus, ullam? Sapiente temporibus ea debitis enim autem blanditiis at, beatae neque rem distinctio harum adipisci placeat facere repellendus mollitia eos. Nobis?",
             price: random100,
-            author: '6130df03b058201c0f6f4386'});
+            author: '613fb47f92f9253a15833a6d'});
         await temp.save();    
     }
 };

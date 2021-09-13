@@ -2,7 +2,7 @@
 <% block('head').append('<title>New Campground</title>') %>
     <h1 class="text-center">New Campground</h1>
     <div class="container w-50">
-    <form action="/campgrounds" method="post" class="needs-validation" novalidate>
+    <form action="/campgrounds" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
         
         <div class="row mb-3 justify-content-center">
             
@@ -44,8 +44,7 @@
                     'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 
                     'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon',
                     'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 
-                    'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-                ];
+                    'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
                         stateNames.forEach(state => { %>
                             <option value="<%= state%>"><%= state%></option>
                     <% }) %>
@@ -62,12 +61,15 @@
                 <div class="valid-feedback">All good!</div>
                 <div id="imageHelp" class="invalid-feedback">Please enter a description for your camp.</div>
             </div>
-            <div class="col-lg-6">
-                <label for="image" class="form-label">Image URL</label>
-                <input type="text" class="form-control" id="image" aria-describedby="imageHelp" name="campground[image]" required>
+            
+             <div class="col-lg-6">
+                <label for="image" class="form-label">Campground Image</label>
+                <div><input type="file" name="image" id="image" required multiple></div>
+                <!--<input type="text" class="form-control" id="image" aria-describedby="imageHelp" name="campground[image]" required>-->
                 <div class="valid-feedback">All good!</div>
-                <div id="imageHelp" class="invalid-feedback">Please enter a image URL for your camp.</div>
-            </div> 
+                <div id="imageHelp" class="invalid-feedback">Please attach an image.</div>
+            </div>  
+            
             
             
         </div>

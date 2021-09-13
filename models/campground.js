@@ -21,9 +21,12 @@ const campgroundSchema = new Schema({
         city: String,
         state: String
     },
-    image:{
-        type: String
-    },
+    image:[
+        {
+            url: String,
+            filename: String
+        }
+    ],
     reviews: [
         {
             type: Schema.Types.ObjectId,

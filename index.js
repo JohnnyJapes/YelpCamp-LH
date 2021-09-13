@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+}
+
 //requirements
 const express = require('express');
 const app = express();
@@ -29,6 +33,8 @@ app.engine('ejs', ejsMate); //ejs-mate setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+
+  
 //connect mongoose, basic error handling, useCreateIndex:true to avoid deprecation warnings from MongoDB
 //local host and single DB for now
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
