@@ -13,7 +13,7 @@ router.route('/')
     //index route
     .get( campgrounds.renderIndex)
     //create new campground route
-    .post(isLoggedIn, upload.single('image'), validateCampground,  campgrounds.createNew);
+    .post(isLoggedIn, upload.array('image'), validateCampground,  campgrounds.createNew);
 
 //campground details routes
 router.route('/:id')
