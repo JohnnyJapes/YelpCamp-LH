@@ -49,9 +49,8 @@ module.exports.renderEdit = catchAsync(async (req, res, next) => {
 //create method - Campground, creates new campground document and inserts it into the database
 module.exports.createNew = catchAsync(async (req, res, next) => {
     // if(!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
-    
     req.body.campground.author = req.user._id;
-    req.body.campground.image = req.file.path;
+    req.body.campground.image = req.files.map(f => ({url: f.path, filename: f.filename}))
      await Campground.insertMany(req.body.campground)
     .then((camp)=>{
         console.log(camp);

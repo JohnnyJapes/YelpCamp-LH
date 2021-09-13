@@ -13,7 +13,8 @@ module.exports.campgroundSchema = Joi.object({
         description: Joi.string().required()
     }).required(),
     file: Joi.object({
-        path: Joi.string()
+        path: Joi.string(),
+        filename: Joi.string(),
     })
 });
 
