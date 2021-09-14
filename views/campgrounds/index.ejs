@@ -7,6 +7,7 @@
             <% campgrounds.forEach(element => { %>
                 <div class="col d-flex justify-content-evenly">
                     <div class="card h-100 " style="width:15rem;">
+                        <img src="https://res.cloudinary.com/dxmydkp0v/image/upload/c_fill,h_200,w_238/v1631294769/YelpCamp/<%= element.image[0].filename %>" class="card-img-top" alt="...">
                         <div class="card-body">
                           <h5 class="card-title"><%= element.title %></h5>
                           <p class="card-text">Location: <%= element.location.city + ", "+ element.location.state %></p>
