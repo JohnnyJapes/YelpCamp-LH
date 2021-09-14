@@ -62,15 +62,17 @@ module.exports.createNew = catchAsync(async (req, res, next) => {
 //update method, updates existing campground document based on id
 module.exports.update = catchAsync(async (req, res, next) => {
     const {id} = req.params;
-    const campground = await Campground.findByIdAndUpdate(id, req.body.campground, {new: true, runValidators: true} ).exec()
-    .then((campground)=>{
-        if(!campground) throw new ExpressError("Invalid Campground Data", 400);
-        else{
+    const campground = await Campground.findByIdAndUpdate(id, req.body.campground, {new: true, runValidators: true} )
+    const fileArray = req.files.map(f => ({url: f.path, filename: f.filename}));
+    campground.image.push(...fileArray)
+    await campground.save();
+    if(!campground) throw new ExpressError("Invalid Campground Data", 400);
+    else{
             //appends messages to top of redirect page
             req.flash('success', 'Successfully updated campground');
             res.redirect(`/campgrounds/${campground._id}`)
-        }
-    })
+        
+    }
 });
 //delete method, deletes existing campground document based off id
 module.exports.delete = catchAsync(async (req, res,next) => {

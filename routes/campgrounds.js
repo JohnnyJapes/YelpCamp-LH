@@ -20,7 +20,7 @@ router.route('/:id')
     //render show/details route
     .get(campgrounds.renderDetails)
     //update route
-    .put(isLoggedIn, isAuthor, validateCampground, campgrounds.update)
+    .put(isLoggedIn, isAuthor, upload.array('image'), validateCampground, campgrounds.update)
     //delete route
     .delete(isLoggedIn, isAuthor, campgrounds.delete);
 
