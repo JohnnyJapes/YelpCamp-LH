@@ -40,8 +40,8 @@ const seedDB = async () => {
             title:`${descriptors[Math.floor(Math.random()*descriptors.length)]} ${
                 places[Math.floor(Math.random()*places.length)]}`,
             location: {city:cities[random1000].city, state:cities[random1000].state}, 
-            image: [{url: "https://res.cloudinary.com/dxmydkp0v/image/upload/v1631294769/YelpCamp/bzlbo6t96d7je4evom4k.jpg", filename:"bzlbo6t96d7je4evom4k.jpg"},
-                    {url:"https://res.cloudinary.com/dxmydkp0v/image/upload/v1631562810/YelpCamp/ioegbjwcjvs1vdqz91eh.png", filename:"ioegbjwcjvs1vdqz91eh.png"}
+            image: [{url: "https://res.cloudinary.com/dxmydkp0v/image/upload/v1631294769/YelpCamp/bzlbo6t96d7je4evom4k.jpg", filename:"YelpCamp/bzlbo6t96d7je4evom4k.jpg"},
+                    {url:"https://res.cloudinary.com/dxmydkp0v/image/upload/v1631562810/YelpCamp/ioegbjwcjvs1vdqz91eh.png", filename:"YelpCamp/ioegbjwcjvs1vdqz91eh.png"}
                     ],
             description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloribus, ullam? Sapiente temporibus ea debitis enim autem blanditiis at, beatae neque rem distinctio harum adipisci placeat facere repellendus mollitia eos. Nobis?",
             price: random100,
