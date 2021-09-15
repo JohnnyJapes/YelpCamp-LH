@@ -76,6 +76,23 @@
             
             
         </div>
+        <div class="row">
+            <label for="">Check to delete images:</label></div>
+        <div class="row mb-3 align-items-start">
+            <% let i = 0;%>
+            <% campground.image.forEach(element => {
+                //assumes upload as delivery type + cloudinary
+                            let index  = element.url.search(/\/upload\//) + 8;
+                            const img = element.url;
+                            const imgUrl = img.slice(0, index) + "c_fill,h_100,w_100/" + img.slice(index);
+                            
+            %>
+                <div class="col-lg-3 col-xl-2 col">
+                    <input type="checkbox" class="form-check-input" name="images[<%=element.filename%>]">
+                    <label for="<%=element.filename%>"><img src="<%=imgUrl%>" alt=""></label>
+                </div>
+           <% i++}); %>
+        </div>
         <div class="row mb-3">
             <div class="col-lg-3">
             <button class="btn btn-success" type="submit">Update Campground</button>
@@ -86,6 +103,7 @@
         
         <div>
         <a class="btn btn-primary" role="button"href="/campgrounds/<%= campground._id %>">Go Back</a>
+
     </div>
     </div>
  

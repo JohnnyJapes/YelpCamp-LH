@@ -15,7 +15,8 @@ module.exports.campgroundSchema = Joi.object({
     file: Joi.object({
         path: Joi.string(),
         filename: Joi.string(),
-    })
+    }),
+    images: Joi.object()
 });
 
 module.exports.reviewSchema = Joi.object({
