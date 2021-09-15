@@ -64,6 +64,16 @@ module.exports.update = catchAsync(async (req, res, next) => {
     const {id} = req.params;
     const campground = await Campground.findByIdAndUpdate(id, req.body.campground, {new: true, runValidators: true} )
     const fileArray = req.files.map(f => ({url: f.path, filename: f.filename}));
+    //delete user selected images by looping over image array vs incoming req.body.images object
+    if (req.body.images){
+        for (let i = 0; i < campground.image.length;){
+            if (req.body.images[campground.image[i].filename] == "on"){
+                campground.image.splice(i,1);
+            }
+            else i++;
+        }
+    }
+   
     campground.image.push(...fileArray)
     await campground.save();
     if(!campground) throw new ExpressError("Invalid Campground Data", 400);
