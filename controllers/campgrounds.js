@@ -1,5 +1,6 @@
 const ExpressError = require('../utils/expressError');
 const catchAsync = require('../utils/catchAsync')
+var cloudinary = require('cloudinary').v2;
 //create model using campground schema
 const Campground = require('../models/campground');
 
@@ -68,7 +69,8 @@ module.exports.update = catchAsync(async (req, res, next) => {
     if (req.body.images){
         for (let i = 0; i < campground.image.length;){
             if (req.body.images[campground.image[i].filename] == "on"){
-                campground.image.splice(i,1);
+                let imgName = campground.image.splice(i,1);
+                await cloudinary.uploader.destroy(imgName[0].filename)
             }
             else i++;
         }
