@@ -97,7 +97,7 @@ passport.deserializeUser(User.deserializeUser());
 
 //local variable for flash success middleware, exposes these variables to ejs
 app.use((req, res, next) => {
-    if (!['/login', '/register', '/', '/logout'].includes(req.originalUrl) && !(new RegExp('review').test(req.originalUrl))) {
+    if (!['/login', '/register', '/', '/logout', '/favicon.ico'].includes(req.originalUrl) && !(new RegExp('review').test(req.originalUrl))) {
         console.log('index')
         console.log(req.originalUrl);
         req.session.returnTo = req.originalUrl;
