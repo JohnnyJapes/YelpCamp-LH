@@ -91,13 +91,17 @@ module.exports.delete = catchAsync(async (req, res,next) => {
     console.log("delete");
     const {id} = req.params;
     console.log(id);
-    const campground = await Campground.findByIdAndDelete(id).exec()
-    .then((campground)=>{
+    const campground = await Campground.findByIdAndDelete(id)
+    
         if(!campground) throw new ExpressError("Page not Found", 404);
         else{
+            //delete all images off cloudinary when destroying campground
+            for (let i = 0; i < campground.image.length; i++){
+                await cloudinary.uploader.destroy(campground.image[i].filename)
+            }
             //appends messages to top of redirect page
             req.flash('success', 'Successfully deleted campground');
             res.redirect(`/campgrounds`)
         }
-    })   
+       
 });
