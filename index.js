@@ -15,6 +15,7 @@ const ExpressError = require('./utils/expressError');
 const catchAsync = require('./utils/catchAsync')
 const session = require('express-session'); 
 const flash = require('connect-flash')
+const cloudinary = require('cloudinary').v2;
 //passport
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy;
@@ -107,6 +108,7 @@ app.use((req, res, next) => {
     res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
+    res.locals.cloudinary = cloudinary;
     next();
 })
 app.listen(3000, () =>{
