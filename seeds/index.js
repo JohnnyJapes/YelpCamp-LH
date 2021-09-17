@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+}
 //requirements
 const express = require('express');
 const app = express();
@@ -7,6 +10,8 @@ const cities = require('./cities');
 const {places, descriptors} = require('./seedHelpers');
 //create model using campground schema
 const Campground = require('../models/campground');
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const geocoder = mbxGeocoding({accessToken:process.env.MAPBOX_TOKEN})
 
 //connect mongoose, basic error handling, useCreateIndex:true to avoid deprecation warnings from MongoDB
 //local host and single DB for now
@@ -33,13 +38,18 @@ const seedDB = async () => {
         console.log(err);
     });
     //loop to seed fake data
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < 40; i++) {
         const random1000 = Math.floor(Math.random()*1000 +1);
         const random100 = parseFloat((Math.random()*99 +1).toFixed(2));
+        const geoData = await geocoder.forwardGeocode({
+            query: cities[random1000].city + ", " + cities[random1000].state,
+            limit: 1
+        }).send()
         const temp = new Campground({
             title:`${descriptors[Math.floor(Math.random()*descriptors.length)]} ${
                 places[Math.floor(Math.random()*places.length)]}`,
             location: {city:cities[random1000].city, state:cities[random1000].state}, 
+            geometry: geoData.body.features[0].geometry,
             image: [{url: "https://res.cloudinary.com/dxmydkp0v/image/upload/v1631294769/YelpCamp/bzlbo6t96d7je4evom4k.jpg", filename:"YelpCamp/bzlbo6t96d7je4evom4k.jpg"},
                     {url:"https://res.cloudinary.com/dxmydkp0v/image/upload/v1631562810/YelpCamp/ioegbjwcjvs1vdqz91eh.png", filename:"YelpCamp/ioegbjwcjvs1vdqz91eh.png"}
                     ],
