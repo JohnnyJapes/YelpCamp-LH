@@ -1,5 +1,7 @@
 <% layout('./layouts/boilerplate') -%>
-<% block('head').append(`<title>${campground.title} Details</title> <link rel="stylesheet" type="text/css" href="/css/starability-checkmark.css"/>`) %>
+<% block('head').append(`<title>${campground.title} Details</title> <link rel="stylesheet" type="text/css" href="/css/starability-checkmark.css"/> 
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css" rel="stylesheet" />
+`) %>
 
 <div class="row mb-3 justify-content-center">
     <div class="col-lg-5 ">
@@ -133,6 +135,9 @@
         
     </div>
 </div>
-
-
-
+<div class="row">
+<div id='map' style='width: 400px; height: 300px;'></div>
+</div>
+<script>const mbxToken = '<%=process.env.MAPBOX_TOKEN%>' </script> 
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js'></script>
+<script src="/js/displayMap.js"></script>
