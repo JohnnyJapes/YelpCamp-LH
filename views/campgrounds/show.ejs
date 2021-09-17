@@ -136,8 +136,13 @@
     </div>
 </div>
 <div class="row">
-<div id='map' style='width: 400px; height: 300px;'></div>
+    <div class="col offset-4">
+        <div id='map' style='width: 400px; height: 300px;'></div>
+    </div>
 </div>
-<script>const mbxToken = '<%=process.env.MAPBOX_TOKEN%>' </script> 
+<script>
+    const mbxToken = '<%=process.env.MAPBOX_TOKEN%>';
+    var coordinates = [<%=campground.geometry.coordinates%>];
+ </script> 
 <script src='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js'></script>
 <script src="/js/displayMap.js"></script>
