@@ -10,7 +10,8 @@ module.exports.campgroundSchema = Joi.object({
             state: Joi.string().required()
         }).required(),
         // image: Joi.string().required(),
-        description: Joi.string().required()
+        description: Joi.string().required(),
+        geometry: Joi.object()
     }).required(),
     file: Joi.object({
         path: Joi.string(),
