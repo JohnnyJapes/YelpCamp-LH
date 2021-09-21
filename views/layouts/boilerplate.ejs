@@ -13,14 +13,16 @@
     <%- include('../partials/navbar') %>
 
         <%- include('../partials/flash') %>
+            <% if ( typeof campgrounds !== 'undefined') { %>
+                <main class="container-fluid flex-shrink-0 mt-0">
 
+                <% }else { %>
+                    <main class="container-fluid flex-shrink-0 mt-3">
+                <% } %>
+        <%- body -%>
+        </main>
 
-            <main class="container-fluid flex-shrink-0 mt-0">
-
-                <%- body -%>
-            </main>
-
-            <%- include('../partials/footer') %>
+        <%- include('../partials/footer') %>
 </body>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/validateForms.js"></script>
