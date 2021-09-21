@@ -8,4 +8,6 @@ const map = new mapboxgl.Map({
 });
 const mark = new mapboxgl.Marker()
     .setLngLat(coordinates)
+    .setPopup(new mapboxgl.Popup()
+        .setHTML("<h5>"+campTitle.innerText+"</h5>")) // add popup
     .addTo(map)
