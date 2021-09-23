@@ -67,5 +67,8 @@ campgroundSchema.post('findOneAndDelete', async function(camp){
 campgroundSchema.virtual('properties.title').get(function() {
     return this.title;
 })
+campgroundSchema.virtual('properties.id').get(function() {
+    return this._id;
+})
 //export module so model can be used in other files
 module.exports = mongoose.model('Campground', campgroundSchema);
