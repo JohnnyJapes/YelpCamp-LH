@@ -4,6 +4,8 @@ const review = require('./review');
 //shortcut so I don't have to type mongoose.Schema everytime
 const Schema = mongoose.Schema;
 
+const opts = {toJSON: {virtuals: true}}
+
 const campgroundSchema = new Schema({
 
     title:{
@@ -53,15 +55,17 @@ const campgroundSchema = new Schema({
     
     
 
-});
+}, opts);
 
-//Delete all asociated reviews after A farm is Deleted
+//Delete all asociated reviews after A campground is Deleted
 campgroundSchema.post('findOneAndDelete', async function(camp){
     if (camp.reviews.length){
         const res = await review.deleteMany({_id: {$in: camp.reivews}});
         console.log(res);
     }
 })
-
+campgroundSchema.virtual('properties.title').get(function() {
+    return this.title;
+})
 //export module so model can be used in other files
 module.exports = mongoose.model('Campground', campgroundSchema);
