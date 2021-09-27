@@ -72,6 +72,11 @@ module.exports.createNew = catchAsync(async (req, res, next) => {
 //update method, updates existing campground document based on id
 module.exports.update = catchAsync(async (req, res, next) => {
     const {id} = req.params;
+    const geoData = await geocoder.forwardGeocode({
+        query: req.body.campground.location.city + ", " + req.body.campground.location.state,
+        limit: 1
+    }).send()
+    req.body.campground.geometry = geoData.body.features[0].geometry;
     const campground = await Campground.findByIdAndUpdate(id, req.body.campground, {new: true, runValidators: true} )
     const fileArray = req.files.map(f => ({url: f.path, filename: f.filename}));
     //delete user selected images by looping over image array vs incoming req.body.images object
