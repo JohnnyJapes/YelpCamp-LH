@@ -6,10 +6,11 @@
 
         <div class="row mb-3 justify-content-center">
             <div class="col-lg-5 ">
-                <div class="card">
+                <div class="card bg-dark text-white">
                     <div class="row mt-1">
                         <div class="col-6 offset-3 justify-content-center flex">
-                            <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                            <div class="d-flex" >
+                            <div id="carouselExampleCaptions" class="carousel slide mh-100" data-bs-ride="carousel">
                                 <% if (campground.image.length> 1) { %>
                                     <div class="carousel-indicators">
                                         <% for( let i=0; i < campground.image.length; i++ ) { %>
@@ -34,7 +35,8 @@
                                                                 <% } %>
                                                                     <img class="img-fluid"
                                                                         src="<%= campground.image[i].url %>"
-                                                                        class="d-block w-100" alt="...">
+                                                                        class="d-block mw-100" alt="..."
+                                                                        style="max-height: 260px">
 
                                                             </div>
                                                             <% } %>
@@ -62,6 +64,7 @@
 
                             </div>
                         </div>
+                        </div>
                         <!-- <img src="<%= campground.image[0].url %>" class="card-img-top" alt="..."> -->
                         <div class="card-body">
                             <h5 class="card-title" id="campTitle">
@@ -73,11 +76,11 @@
                                 <%= campground.description %>
                             </p>
                         </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Location: <%= campground.location.city + ", " +
+                        <ul class="list-group list-group-flush bg-dark">
+                            <li class="list-group-item bg-dark text-white">Location: <%= campground.location.city + ", " +
                                     campground.location.state %>
                             </li>
-                            <li class="list-group-item">Price: $<%= campground.price.toFixed(2) %>/night</li>
+                            <li class="list-group-item bg-dark text-white">Price: $<%= campground.price.toFixed(2) %>/night</li>
                         </ul>
                         <% if (currentUser && (currentUser.username===campground.author.username)) { %>
                             <div class="card-body ">
@@ -142,8 +145,8 @@
                         <h4>Reviews</h4>
                         <% campground.reviews.forEach(review=> { %>
                             <div class="col-12">
-                                <div class="card mb-1">
-                                    <div class="card-body">
+                                <div class="card mb-1 bg-dark border-light border-2">
+                                    <div class="card-body ">
                                         <h5 class="card-title starability-result" data-rating="<%= review.rating %>">
                                             Rating: <%= review.rating %> stars</h5>
                                         <h6 class="card-subtitle mb-2 text-muted">by <%= review.author.username %>
