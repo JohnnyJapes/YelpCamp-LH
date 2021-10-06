@@ -1,11 +1,12 @@
 <% layout('./layouts/boilerplate') -%>
 <% block('head').append('<title>Home</title>') %>
-
+<div class="bg-dark text-white">
 <div class="row">
     <div class="col-6 offset-3 justify-content-center">
-        <h1>Welcome to Yelp Camp</h1>
+        <h1 class="text-center">Welcome to Yelp Camp</h1>
         <br>
-        <a href="/campgrounds">Go to Campgrounds Index</a>
+        <p class="text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat iure rem odit sint reprehenderit commodi culpa labore iusto, neque aperiam illum veritatis quia minus iste accusantium, amet consequatur fuga quod.</p>
+        
     </div>
 </div>
    
@@ -53,6 +54,11 @@
         
     </div>
 </div>
+<div class="row justify-content-center mt-3">
+  <div class="col-6 justify-content-center d-flex">
+    <a class="btn btn-primary" href="/campgrounds" role="button">Go to Campgrounds Index</a>
+  </div>
+</div>
    
-
+</div>
 </html>
