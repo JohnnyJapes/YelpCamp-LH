@@ -1,12 +1,13 @@
 <% layout('./layouts/boilerplate') -%>
     <% block('head').append(`<title>${campground.title} Details</title>
         <link rel="stylesheet" type="text/css" href="/css/starability-checkmark.css" />
+        <link rel="stylesheet" type="text/css" href="/css/app.css" />
         <link href="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css" rel="stylesheet" />
         `) %>
 
         <div class="row mb-3 justify-content-center">
             <div class="col-lg-5 ">
-                <div class="card bg-dark text-white">
+                <div class="card bg-dark text-white border-secondary">
                     <div class="row mt-1">
                         <div class="col-6 offset-3 justify-content-center flex">
                             <div class="d-flex" >
@@ -77,7 +78,7 @@
                             </p>
                         </div>
                         <ul class="list-group list-group-flush bg-dark">
-                            <li class="list-group-item bg-dark text-white">Location: <%= campground.location.city + ", " +
+                            <li class="list-group-item bg-dark text-white border-secondary">Location: <%= campground.location.city + ", " +
                                     campground.location.state %>
                             </li>
                             <li class="list-group-item bg-dark text-white">Price: $<%= campground.price.toFixed(2) %>/night</li>
@@ -101,7 +102,7 @@
                             <% } %>
 
                     </div>
-                    <div id='map' style='width: 100%; height: 300px;' class="d-flex mt-2"></div>
+                    <div id='map' class="d-flex mt-2"></div>
 
                 </div>
 
@@ -145,7 +146,7 @@
                         <h4>Reviews</h4>
                         <% campground.reviews.forEach(review=> { %>
                             <div class="col-12">
-                                <div class="card mb-1 bg-dark border-light border-2">
+                                <div class="card mb-1 bg-dark border-secondary border-2">
                                     <div class="card-body ">
                                         <h5 class="card-title starability-result" data-rating="<%= review.rating %>">
                                             Rating: <%= review.rating %> stars</h5>
