@@ -1,20 +1,13 @@
 <% layout('./layouts/boilerplate') -%>
     <% block('head').append(`<title>All Campgrounds</title>
-        <link href="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css" rel="stylesheet" /> ` ) %>
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css" rel="stylesheet" /> 
+        <link rel="stylesheet" type="text/css" href="/css/app.css" />` ) %>
 
         <div">
-            <div id="map"></div>
+            <div id="cluster-map"></div>
         </div>
         <h1 class="text-center">All Campgrounds</h1>
-        <style>
-            #map {
-
-                top: 0;
-                bottom: 0;
-                height: 500px;
-                width: 100%;
-            }
-        </style>
+     
 
 
         <div class="container-fluid px-3 overflow-hidden">
