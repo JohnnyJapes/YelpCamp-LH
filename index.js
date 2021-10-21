@@ -16,6 +16,7 @@ const catchAsync = require('./utils/catchAsync')
 const session = require('express-session'); 
 const flash = require('connect-flash')
 const cloudinary = require('cloudinary').v2;
+const mongoSanitize = require('express-mongo-sanitize');
 //passport
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy;
@@ -84,6 +85,9 @@ app.use(methodOverride('_method'));
 
 //set up directory for scripts and the like
 app.use(express.static(path.join(__dirname, 'public')))
+
+//sanitize input to prevent mongo injection
+app.use(mongoSanitize())
 
 // Configure passport middleware
 app.use(passport.initialize());
