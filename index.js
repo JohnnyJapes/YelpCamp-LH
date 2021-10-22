@@ -58,13 +58,15 @@ mongoose.connection.on('error', console.error.bind(console, 'connection error:')
 
 //Session configuration
 const sessionConfig = {
-    secret: 'secretword',
+    name: 'campSes',
+    secret: 'secretwordshouldbesupersecret',
     resave: false,
     saveUninitialized: true,
     cookie: {
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7, //calculation is for ms in a week
         maxAge: 1000 * 60 * 60 * 24 * 7,
-        httpOnly: true
+        httpOnly: true,
+        //secure: true
     }
 }
 
