@@ -17,6 +17,7 @@ const session = require('express-session');
 const flash = require('connect-flash')
 const cloudinary = require('cloudinary').v2;
 const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require("helmet");
 //passport
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy;
@@ -74,6 +75,12 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 
 app.use(flash());
+
+app.use(
+    helmet({
+      contentSecurityPolicy: false,
+    })
+  );
 
 //set up parsing for data types
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
