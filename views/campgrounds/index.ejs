@@ -46,13 +46,6 @@
 
             </div>
 
-            <ul>
-                <% campgrounds.forEach(element=> { %>
-                    <li> <a href="/campgrounds/<%= element._id %>">
-                            <%= element.title %>
-                        </a></li>
-                    <% }) %>
-            </ul>
             <script>
                 const mbxToken = '<%=process.env.MAPBOX_TOKEN%>';
                 const campData = {features:<%-JSON.stringify(campgrounds)%>} 
