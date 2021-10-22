@@ -32,7 +32,7 @@ const userRoutes = require('./routes/users')
 // requires the model with Passport-Local Mongoose plugged in
 const User = require('./models/user');
 
-const dbUrl = 'mongodb://localhost:27017/yelp-camp'// process.env.DB_URL
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp'// process.env.DB_URL
 
 app.engine('ejs', ejsMate); //ejs-mate setup
 //set views directory
