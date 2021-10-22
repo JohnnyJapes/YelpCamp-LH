@@ -18,6 +18,7 @@ const flash = require('connect-flash')
 const cloudinary = require('cloudinary').v2;
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require("helmet");
+const MongoStore = require('connect-mongo')
 //passport
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy;
@@ -31,6 +32,8 @@ const userRoutes = require('./routes/users')
 // requires the model with Passport-Local Mongoose plugged in
 const User = require('./models/user');
 
+const dbUrl = 'mongodb://localhost:27017/yelp-camp'// process.env.DB_URL
+
 app.engine('ejs', ejsMate); //ejs-mate setup
 //set views directory
 app.set('views', path.join(__dirname, 'views'));
@@ -40,7 +43,8 @@ app.set('view engine', 'ejs');
   
 //connect mongoose, basic error handling, useCreateIndex:true to avoid deprecation warnings from MongoDB
 //local host and single DB for now
-mongoose.connect('mongodb://localhost:27017/yelp-camp', {
+//mongoose.connect('mongodb://localhost:27017/yelp-camp', {
+mongoose.connect(dbUrl, {
     useNewUrlParser: true, 
     useUnifiedTopology: true,
     useCreateIndex: true,
@@ -57,12 +61,28 @@ mongoose.connect('mongodb://localhost:27017/yelp-camp', {
 //listener fuction to catch errors on connection
 mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 
+
+// const store = new MongoStore({
+//     url: dbUrl,
+//     secret: 'secretwordshouldbesupersecret',
+//     touchAfter: 24 * 3600
+// });
+
+// store.on("error", function (e) {
+//     console.log("Session Store Error", e)
+// })
 //Session configuration
 const sessionConfig = {
     name: 'campSes',
     secret: 'secretwordshouldbesupersecret',
     resave: false,
     saveUninitialized: true,
+    store: MongoStore.create({
+        mongoUrl: dbUrl,
+        
+        secret: 'secretwordshouldbesupersecret',
+        touchAfter: 24 * 3600
+      }),
     cookie: {
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7, //calculation is for ms in a week
         maxAge: 1000 * 60 * 60 * 24 * 7,
