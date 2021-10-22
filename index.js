@@ -138,6 +138,7 @@ app.use(
                 "https://res.cloudinary.com/dxmydkp0v/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT! 
                 "http://res.cloudinary.com/dxmydkp0v/",
                 "https://images.unsplash.com/",
+                "https://source.unsplash.com/collection/483251",
             ],
             fontSrc: ["'self'", ...fontSrcUrls],
         },
