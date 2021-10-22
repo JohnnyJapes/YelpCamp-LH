@@ -188,8 +188,8 @@ app.use((req, res, next) => {
     res.locals.cloudinary = cloudinary;
     next();
 })
-app.listen(3000, () =>{
-    console.log('Listening on Port 3000') 
+app.listen(process.env.PORT || 3000, () =>{
+    console.log('Listening on Port ' + process.env.PORT) 
 });
 
 
