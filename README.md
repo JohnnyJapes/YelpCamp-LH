@@ -10,8 +10,9 @@ MVC structure <br>
 
 Incorporates the following technologies:
 
-Node.js: https://nodejs.org/en/ <br>
-Express: https://expressjs.com <br>
-MongoDB: https://www.mongodb.com <br>
-Mongoose : https://mongoosejs.com <br>
-EJS : https://ejs.co
+Node.js <br>
+Express<br>
+MongoDB<br>
+Mongoose <br>
+EJS <br>
+Bootstrap
